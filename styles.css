@@ -1,0 +1,250 @@
+:root {
+  --primary-blue: #007acc;
+  --dark-bg: #121212;
+  --light-text: #ffffff;
+  --secondary-text: #bbbbbb;
+  --card-bg: #1e1e1e;
+  --border-radius: 8px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--dark-bg);
+  color: var(--light-text);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* --- Navigation Bar --- */
+nav {
+  background-color: rgba(30, 30, 30, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #333;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  padding: 1rem 0;
+}
+
+nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav .logo {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--light-text);
+  text-decoration: none;
+}
+
+nav .logo span {
+  color: var(--primary-blue);
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  color: var(--secondary-text);
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: var(--primary-blue);
+}
+
+/* --- Hero Section --- */
+#home {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 80px; /* Offset for fixed nav */
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  animation: fadeInUp 0.8s ease-out both;
+}
+
+.hero-content h1 img {
+  height: 50px;
+}
+
+.hero-content h3 {
+  font-size: 1.8rem;
+  color: var(--primary-blue);
+  font-weight: 400;
+  margin-bottom: 1rem;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.hero-content p {
+  font-size: 1.1rem;
+  color: var(--secondary-text);
+  max-width: 600px;
+  margin: 0 auto;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+/* --- Section Styling --- */
+section {
+  padding: 100px 0;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  font-weight: 700;
+}
+
+.section-title span {
+  color: var(--primary-blue);
+}
+
+/* --- About Me Section --- */
+#about .about-content {
+  background-color: var(--card-bg);
+  padding: 30px;
+  border-radius: var(--border-radius);
+  border: 1px solid #333;
+}
+
+#about ul {
+  list-style: none;
+  margin-top: 20px;
+}
+
+#about ul li {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  color: var(--secondary-text);
+}
+
+#about ul li span {
+  margin-right: 10px;
+}
+
+/* --- Tech Stack Section --- */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.stack-category {
+  background-color: var(--card-bg);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  border: 1px solid #333;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+  overflow: hidden; /* Important for the details box animation */
+}
+
+.stack-category:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 122, 204, 0.2);
+}
+
+/* NEW: Active state for the clicked card */
+.stack-category.active {
+  border-color: var(--primary-blue);
+  box-shadow: 0 5px 20px rgba(0, 122, 204, 0.2);
+}
+
+.stack-category h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: var(--primary-blue);
+  padding-bottom: 10px;
+  border-bottom: 1px solid #444;
+}
+
+.tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* NEW: Styles for the details box */
+.details-box {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-out, opacity 0.5s ease-out,
+    margin-top 0.5s ease-out;
+  margin-top: 0;
+  color: var(--secondary-text);
+}
+
+/* NEW: Styles for the details box when the card is active */
+.stack-category.active .details-box {
+  margin-top: 20px;
+  max-height: 100px; /* Adjust if your text is longer */
+  opacity: 1;
+}
+
+/* --- Footer --- */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 40px;
+  border-top: 1px solid #333;
+  color: var(--secondary-text);
+}
+
+/* --- Animation Keyframes --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Scroll Animation Classes --- */
+.hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+}
