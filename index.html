@@ -4,20 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nuno Araújo | .NET Developer</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
       rel="stylesheet"
     />
-
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <nav>
       <div class="container">
-        <a href="#home" class="logo">Nuno Araújo<span>.</span></a>
+        <a href="#home" class="logo">Nuno Araújo</a>
         <ul>
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
@@ -34,24 +32,99 @@
             <img
               src="https://user-images.githubusercontent.com/18350557/176309783-0785949b-9127-417c-8b55-ab5a4333674e.gif"
               alt="Waving hand gif"
-            />, my name is Nuno
+            />, I'm <span id="name-hover">Nuno Araújo</span>
           </h1>
           <h3>.NET Developer</h3>
-          <p>
-            👋 I'm Nuno Araújo, a Full Stack .NET Developer building a strong
-            foundation in software development. My main skills are .NET Core,
-            C#, SQL Server, HTML, JavaScript and CSS. I'm a young developer
-            improving my problem-solving skills and outside work, I stay active
-            in Scouts and enjoy music, photography, and sports 🏃.
-          </p>
+          <div class="intro-text">
+            <p>
+              👋 I'm a passionate Full Stack Developer specializing in the .NET
+              ecosystem.
+            </p>
+            <p>
+              My focus is on writing clean, efficient code to solve complex
+              problems and build great software.
+            </p>
+          </div>
+          <div class="cta-buttons">
+            <a href="#footer" class="btn btn-primary">Contact Me</a>
+            <a href="#" target="_blank" class="btn btn-secondary"
+              >My Projects</a
+            >
+          </div>
+
+          <div class="carousel-wrapper">
+            <button class="carousel-btn prev-btn">‹</button>
+            <div class="hobby-carousel-container">
+              <div class="hobby-carousel">
+                <div class="hobby-slide">
+                  <div class="hobby-card">
+                    <img
+                      src="https://picsum.photos/400/220?image=1074"
+                      alt="Scouts"
+                    />
+                    <h4>Scouts</h4>
+                    <p>
+                      Developing leadership, teamwork, and outdoor skills since
+                      I was young.
+                    </p>
+                  </div>
+                </div>
+                <div class="hobby-slide">
+                  <div class="hobby-card">
+                    <img
+                      src="https://picsum.photos/400/220?image=431"
+                      alt="SC Braga"
+                    />
+                    <h4>SC Braga</h4>
+                    <p>
+                      Passionate supporter of my hometown club. The Arsenalistas
+                      of Portugal!
+                    </p>
+                  </div>
+                </div>
+                <div class="hobby-slide">
+                  <div class="hobby-card">
+                    <img
+                      src="https://picsum.photos/400/220?image=145"
+                      alt="Music"
+                    />
+                    <h4>Music</h4>
+                    <p>
+                      From rock concerts to chill playlists, music is my daily
+                      companion.
+                    </p>
+                  </div>
+                </div>
+                <div class="hobby-slide">
+                  <div class="hobby-card">
+                    <img
+                      src="https://picsum.photos/400/220?image=25"
+                      alt="Photography"
+                    />
+                    <h4>Photography</h4>
+                    <p>
+                      Capturing moments and landscapes with my camera is my
+                      creative outlet.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-btn next-btn">›</button>
+          </div>
         </div>
       </div>
+      <img
+        src="public/run-pikachu.gif"
+        alt="A wild Pikachu appears"
+        id="pikachu"
+      />
     </header>
 
     <main>
       <section id="about">
         <div class="container">
-          <h2 class="section-title hidden">💫 About Me<span>.</span></h2>
+          <h2 class="section-title hidden">💫 About Me</h2>
           <div class="about-content hidden">
             <ul>
               <li><span>🌍</span> I'm based in Portugal</li>
@@ -67,7 +140,7 @@
 
       <section id="stack">
         <div class="container">
-          <h2 class="section-title hidden">💻 Tech Stack<span>.</span></h2>
+          <h2 class="section-title hidden">💻 Tech Stack</h2>
           <div class="stack-grid">
             <div class="stack-category hidden" data-tech="backend">
               <h3>💾 Backend</h3>
@@ -81,7 +154,7 @@
                   alt="C#"
                 />
                 <img
-                  src="https://img.shields.io/badge/Microsoft%20SQL%20Server-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white"
+                  src="https://img.shields.io/badge/Microsoft%20SQL%2C%20Server-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white"
                   alt="Microsoft SQL Server"
                 />
                 <img
@@ -173,7 +246,7 @@
       </section>
     </main>
 
-    <footer>
+    <footer id="footer">
       <div class="container">
         <p>&copy; 2025 Nuno Araújo. All Rights Reserved.</p>
       </div>
