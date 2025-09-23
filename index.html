@@ -13,12 +13,15 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <canvas id="particle-canvas"></canvas>
+
     <nav>
       <div class="container">
         <a href="#home" class="logo">Nuno Araújo</a>
         <ul>
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
+          <li><a href="#hobbies">Hobbies</a></li>
           <li><a href="#stack">Tech Stack</a></li>
         </ul>
       </div>
@@ -51,67 +54,6 @@
               >My Projects</a
             >
           </div>
-
-          <div class="carousel-wrapper">
-            <button class="carousel-btn prev-btn">‹</button>
-            <div class="hobby-carousel-container">
-              <div class="hobby-carousel">
-                <div class="hobby-slide">
-                  <div class="hobby-card">
-                    <img
-                      src="https://picsum.photos/400/220?image=1074"
-                      alt="Scouts"
-                    />
-                    <h4>Scouts</h4>
-                    <p>
-                      Developing leadership, teamwork, and outdoor skills since
-                      I was young.
-                    </p>
-                  </div>
-                </div>
-                <div class="hobby-slide">
-                  <div class="hobby-card">
-                    <img
-                      src="https://picsum.photos/400/220?image=431"
-                      alt="SC Braga"
-                    />
-                    <h4>SC Braga</h4>
-                    <p>
-                      Passionate supporter of my hometown club. The Arsenalistas
-                      of Portugal!
-                    </p>
-                  </div>
-                </div>
-                <div class="hobby-slide">
-                  <div class="hobby-card">
-                    <img
-                      src="https://picsum.photos/400/220?image=145"
-                      alt="Music"
-                    />
-                    <h4>Music</h4>
-                    <p>
-                      From rock concerts to chill playlists, music is my daily
-                      companion.
-                    </p>
-                  </div>
-                </div>
-                <div class="hobby-slide">
-                  <div class="hobby-card">
-                    <img
-                      src="https://picsum.photos/400/220?image=25"
-                      alt="Photography"
-                    />
-                    <h4>Photography</h4>
-                    <p>
-                      Capturing moments and landscapes with my camera is my
-                      creative outlet.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button class="carousel-btn next-btn">›</button>
-          </div>
         </div>
       </div>
       <img
@@ -134,6 +76,23 @@
                 up-to-date projects in the .NET community
               </li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOBBIES SECTION MOVED HERE -->
+      <section id="hobbies">
+        <div class="container">
+          <h2 class="section-title hidden">My Hobbies</h2>
+          <div class="carousel-wrapper">
+            <button class="carousel-btn prev-btn">‹</button>
+            <div class="scene">
+              <div class="hobby-carousel-flipper">
+                <div class="hobby-card card-front"></div>
+                <div class="hobby-card card-back"></div>
+              </div>
+            </div>
+            <button class="carousel-btn next-btn">›</button>
           </div>
         </div>
       </section>

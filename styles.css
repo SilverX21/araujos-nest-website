@@ -1,428 +1,412 @@
 :root {
-  --primary-blue: #007acc;
-  --dark-bg: #121212;
-  --light-text: #ffffff;
-  --secondary-text: #bbbbbb;
-  --card-bg: #1e1e1e;
-  --border-radius: 8px;
+    --primary-blue: #007acc;
+    --dark-bg: #121212;
+    --light-text: #ffffff;
+    --secondary-text: #bbbbbb;
+    --card-bg: #1e1e1e;
+    --border-radius: 8px;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 body {
-  font-family: "Roboto", sans-serif;
-  background-color: var(--dark-bg);
-  color: var(--light-text);
-  line-height: 1.6;
-  overflow-x: hidden;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--light-text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 .container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 20px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-/* --- Navigation Bar --- */
+/* --- UPDATED: Navigation Bar --- */
 nav {
-  background-color: rgba(30, 30, 30, 0.85);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #333;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 1000;
-  padding: 1rem 0;
+    background-color: rgba(30, 30, 30, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #333;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem 0;
 }
 
 nav .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 nav .logo {
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--light-text);
-  text-decoration: none;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--light-text);
+    text-decoration: none;
 }
 
 nav ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
+    list-style: none;
+    display: flex;
+    gap: 25px; /* Increased gap */
 }
 
 nav a {
-  color: var(--secondary-text);
-  text-decoration: none;
-  font-weight: 400;
-  transition: color 0.3s ease;
+    color: var(--secondary-text);
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.3s ease;
+    position: relative;
+    padding-bottom: 5px; /* Space for the underline */
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary-blue);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
 }
 
 nav a:hover {
-  color: var(--primary-blue);
+    color: var(--light-text);
+}
+
+nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
 }
 
 /* --- Hero Section --- */
 #home {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding-top: 80px;
-  position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+    position: relative;
 }
 
 .hero-content {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto;
-  width: 100%;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .hero-content h1 {
-  font-size: 3.5rem;
-  margin-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  animation: fadeInUp 0.8s ease-out both;
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    animation: fadeInUp 0.8s ease-out both;
 }
 
 .hero-content h1 img {
-  height: 50px;
+    height: 50px;
 }
 
 #name-hover {
-  color: var(--primary-blue);
-  cursor: pointer;
-  border-bottom: 2px dashed transparent;
-  transition: border-bottom-color 0.3s ease;
+    color: var(--primary-blue);
+    cursor: pointer;
+    border-bottom: 2px dashed transparent;
+    transition: border-bottom-color 0.3s ease;
 }
 #name-hover:hover {
-  border-bottom-color: var(--primary-blue);
+    border-bottom-color: var(--primary-blue);
 }
 
+
 .hero-content h3 {
-  font-size: 1.8rem;
-  font-weight: 400;
-  margin-bottom: 1.5rem;
-  animation: fadeInUp 0.8s ease-out 0.2s both;
-  color: var(--light-text);
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+    color: var(--light-text);
 }
 
 .intro-text {
-  font-size: 1.1rem;
-  color: var(--secondary-text);
-  max-width: 600px;
-  margin: 0 auto;
-  animation: fadeInUp 0.8s ease-out 0.4s both;
+    font-size: 1.1rem;
+    color: var(--secondary-text);
+    max-width: 600px;
+    margin: 0 auto;
+    animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
 .intro-text p {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
-/* --- Button Styles --- */
 .cta-buttons {
-  margin-top: 2rem;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  animation: fadeInUp 0.8s ease-out 0.6s both;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    animation: fadeInUp 0.8s ease-out 0.6s both;
 }
 
 .btn {
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--border-radius);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 1rem;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .btn:hover {
-  transform: translateY(-3px);
+    transform: translateY(-3px);
 }
 
 .btn-primary {
-  background-color: var(--primary-blue);
-  color: var(--light-text);
+    background-color: var(--primary-blue);
+    color: var(--light-text);
 }
 
 .btn-primary:hover {
-  background-color: #0099ff;
+    background-color: #0099ff;
 }
 
 .btn-secondary {
-  background-color: transparent;
-  color: var(--light-text);
-  border: 2px solid var(--primary-blue);
+    background-color: transparent;
+    color: var(--light-text);
+    border: 2px solid var(--primary-blue);
 }
 
 .btn-secondary:hover {
-  background-color: var(--primary-blue);
+    background-color: var(--primary-blue);
 }
 
-/* --- Carousel Styles --- */
+/* Carousel Styles for 3D Flip */
 .carousel-wrapper {
-  margin-top: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  animation: fadeInUp 0.8s ease-out 0.8s both;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    animation: fadeInUp 0.8s ease-out 0.8s both;
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
 }
-
-.hobby-carousel-container {
-  width: 100%;
-  overflow: hidden;
+.scene {
+    width: 100%;
+    max-width: 380px;
+    height: 380px;
+    perspective: 1200px;
 }
-
-.hobby-carousel {
-  display: flex;
+.hobby-carousel-flipper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
 }
-
-.hobby-slide {
-  min-width: 100%;
-  flex-shrink: 0;
-  box-sizing: border-box;
-  /* UPDATED: Padding removed from here */
-}
-
 .hobby-card {
-  background-color: var(--card-bg);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  text-align: center;
-  border: 1px solid #333;
-  width: 90%; /* Make card slightly smaller than the slide */
-  margin: 1rem auto; /* Center the card within the slide */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-
 .hobby-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  display: block;
-  border-top-left-radius: var(--border-radius);
-  border-top-right-radius: var(--border-radius);
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
 }
-
 .hobby-card h4 {
-  color: var(--primary-blue);
-  margin: 1rem 0 0.5rem;
-  font-size: 1.3rem;
+    color: var(--primary-blue); margin: 1rem 0 0.5rem; font-size: 1.3rem;
 }
-
 .hobby-card p {
-  font-size: 1rem;
-  color: var(--secondary-text);
-  padding: 0 1rem 1.5rem;
+    font-size: 1rem; color: var(--secondary-text); padding: 0 1rem 1.5rem;
 }
-
+.card-back {
+    transform: rotateY(180deg);
+}
 .carousel-btn {
-  background-color: transparent;
-  border: 1px solid #444;
-  color: var(--light-text);
-  font-size: 1.5rem;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+    background-color: transparent; border: 1px solid #444; color: var(--light-text); font-size: 1.5rem;
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    flex-shrink: 0;
 }
+.carousel-btn:hover { background-color: var(--primary-blue); border-color: var(--primary-blue); }
 
-.carousel-btn:hover {
-  background-color: var(--primary-blue);
-  border-color: var(--primary-blue);
-}
-
-/* Responsive carousel */
-@media (max-width: 600px) {
-  .carousel-wrapper {
-    gap: 0.5rem;
-  }
-  .hobby-carousel-container {
-    max-width: 280px;
-  }
-  .hobby-card {
-    width: 100%; /* Use full width on small screens */
-  }
-}
-
-/* --- Pikachu styles --- */
 #pikachu {
-  position: fixed;
-  bottom: 20px;
-  left: -150px;
-  width: 100px;
-  height: auto;
-  z-index: 2000;
-  transform: translateX(0);
-  opacity: 0;
-  pointer-events: none;
+    position: fixed;
+    bottom: 20px;
+    left: -150px;
+    width: 100px;
+    height: auto;
+    z-index: 2000;
+    transform: translateX(0);
+    opacity: 0;
+    pointer-events: none;
 }
 
 @keyframes runPikachu {
-  0% {
-    left: -150px;
-    opacity: 0;
-    transform: scaleX(1);
-  }
-  10% {
-    left: 0;
-    opacity: 1;
-  }
-  80% {
-    left: calc(100vw - 100px);
-    opacity: 1;
-  }
-  100% {
-    left: 100vw;
-    opacity: 0;
-  }
+    0% { left: -150px; opacity: 0; transform: scaleX(1); }
+    10% { left: 0; opacity: 1; }
+    80% { left: calc(100vw - 100px); opacity: 1; }
+    100% { left: 100vw; opacity: 0; }
 }
 
 #pikachu.animate-pikachu {
-  animation: runPikachu 5s forwards ease-out;
+    animation: runPikachu 5s forwards ease-out;
 }
 
-/* --- Section Styling --- */
 section {
-  padding: 100px 0;
+    padding: 100px 0;
 }
 
 .section-title {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 40px;
-  font-weight: 700;
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    font-weight: 700;
 }
 
-/* --- About Me Section --- */
+/* --- UPDATED: About Me Section --- */
 #about .about-content {
-  background-color: var(--card-bg);
-  padding: 30px;
-  border-radius: var(--border-radius);
-  border: 1px solid #333;
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    border: 1px solid #333;
+    text-align: center; /* Center the container's content */
 }
 
 #about ul {
-  list-style: none;
-  margin-top: 20px;
+    list-style: none;
+    margin-top: 20px;
+    display: inline-block; /* Allows the block to be centered */
+    text-align: left; /* Aligns the text inside the li to the left */
 }
 
 #about ul li {
-  font-size: 1.1rem;
-  margin-bottom: 10px;
-  color: var(--secondary-text);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--secondary-text);
 }
 
 #about ul li span {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
-/* --- Tech Stack Section --- */
 .stack-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
 }
 
 .stack-category {
-  background-color: var(--card-bg);
-  padding: 25px;
-  border-radius: var(--border-radius);
-  border: 1px solid #333;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  cursor: pointer;
-  overflow: hidden;
-  text-align: center;
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    border: 1px solid #333;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+    text-align: center;
 }
 
 .stack-category:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 20px rgba(0, 122, 204, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 122, 204, 0.2);
 }
 
 .stack-category.active {
-  border-color: var(--primary-blue);
-  box-shadow: 0 5px 20px rgba(0, 122, 204, 0.2);
+    border-color: var(--primary-blue);
+    box-shadow: 0 5px 20px rgba(0, 122, 204, 0.2);
 }
 
 .stack-category h3 {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  color: var(--primary-blue);
-  padding-bottom: 10px;
-  border-bottom: 1px solid #444;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--primary-blue);
+    padding-bottom: 10px;
+    border-bottom: 1px solid #444;
 }
 
 .tech-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
 }
 
 .details-box {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease-out, opacity 0.5s ease-out,
-    margin-top 0.5s ease-out;
-  margin-top: 0;
-  color: var(--secondary-text);
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out,
+      margin-top 0.5s ease-out;
+    margin-top: 0;
+    color: var(--secondary-text);
 }
 
 .stack-category.active .details-box {
-  margin-top: 20px;
-  max-height: 100px;
-  opacity: 1;
-}
-
-/* --- Footer --- */
-footer {
-  text-align: center;
-  padding: 40px 20px;
-  margin-top: 40px;
-  border-top: 1px solid #333;
-  color: var(--secondary-text);
-}
-
-/* --- Global Fade-In-Up Animation --- */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
+    margin-top: 20px;
+    max-height: 100px;
     opacity: 1;
-    transform: translateY(0);
-  }
 }
 
-/* --- Scroll Animation Classes --- */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 40px;
+    border-top: 1px solid #333;
+    color: var(--secondary-text);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .hidden {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .show {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
+

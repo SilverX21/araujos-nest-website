@@ -1,5 +1,95 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // --- Scroll Animation Logic ---
+  const canvas = document.getElementById("particle-canvas");
+  if (canvas) {
+    const ctx = canvas.getContext("2d");
+    let particlesArray;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Particle {
+      constructor(x, y, directionX, directionY, size, color) {
+        this.x = x;
+        this.y = y;
+        this.directionX = directionX;
+        this.directionY = directionY;
+        this.size = size;
+        this.color = color;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+        ctx.fillStyle = "rgba(0, 122, 204, 0.5)";
+        ctx.fill();
+      }
+      update() {
+        if (this.x > canvas.width || this.x < 0) {
+          this.directionX = -this.directionX;
+        }
+        if (this.y > canvas.height || this.y < 0) {
+          this.directionY = -this.directionY;
+        }
+        this.x += this.directionX;
+        this.y += this.directionY;
+        this.draw();
+      }
+    }
+
+    function init() {
+      particlesArray = [];
+      let numberOfParticles = (canvas.height * canvas.width) / 9000;
+      for (let i = 0; i < numberOfParticles; i++) {
+        let size = Math.random() * 2 + 1;
+        let x = Math.random() * (innerWidth - size * 2 - size * 2) + size * 2;
+        let y = Math.random() * (innerHeight - size * 2 - size * 2) + size * 2;
+        let directionX = Math.random() * 0.4 - 0.2;
+        let directionY = Math.random() * 0.4 - 0.2;
+        particlesArray.push(new Particle(x, y, directionX, directionY, size));
+      }
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+      }
+      connect();
+    }
+
+    function connect() {
+      let opacityValue = 1;
+      for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a; b < particlesArray.length; b++) {
+          let distance =
+            (particlesArray[a].x - particlesArray[b].x) *
+              (particlesArray[a].x - particlesArray[b].x) +
+            (particlesArray[a].y - particlesArray[b].y) *
+              (particlesArray[a].y - particlesArray[b].y);
+          if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+            opacityValue = 1 - distance / 20000;
+            ctx.strokeStyle = `rgba(0, 122, 204, ${opacityValue})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    window.addEventListener("resize", () => {
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+      init();
+    });
+
+    init();
+    animate();
+  }
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -16,7 +106,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const hiddenElements = document.querySelectorAll(".hidden");
   hiddenElements.forEach((el) => observer.observe(el));
 
-  // --- Tech Stack Click Logic ---
   const stackCategories = document.querySelectorAll(".stack-category");
 
   stackCategories.forEach((card) => {
@@ -32,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // --- Pikachu Hover Logic ---
   const nameHover = document.getElementById("name-hover");
   const pikachu = document.getElementById("pikachu");
 
@@ -46,65 +134,75 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // --- UPDATED: Infinite Hobby Carousel Logic ---
-  const carousel = document.querySelector(".hobby-carousel");
-  if (carousel) {
-    const slides = Array.from(carousel.children);
+  const hobbies = [
+    {
+      title: "Scouts",
+      desc: "Developing leadership and outdoor skills.",
+      img: "https://picsum.photos/400/220?image=1074",
+    },
+    {
+      title: "SC Braga",
+      desc: "Passionate supporter of my hometown club.",
+      img: "https://picsum.photos/400/220?image=431",
+    },
+    {
+      title: "Music",
+      desc: "My daily companion, from rock to chill playlists.",
+      img: "https://picsum.photos/400/220?image=145",
+    },
+    {
+      title: "Photography",
+      desc: "Capturing moments and landscapes.",
+      img: "https://picsum.photos/400/220?image=25",
+    },
+  ];
+
+  const flipper = document.querySelector(".hobby-carousel-flipper");
+  if (flipper) {
     const prevBtn = document.querySelector(".prev-btn");
     const nextBtn = document.querySelector(".next-btn");
-    const totalRealSlides = slides.length;
+    const cardFront = document.querySelector(".card-front");
+    const cardBack = document.querySelector(".card-back");
 
-    if (totalRealSlides > 1) {
-      const firstClone = slides[0].cloneNode(true);
-      const lastClone = slides[slides.length - 1].cloneNode(true);
-      carousel.appendChild(firstClone);
-      carousel.insertBefore(lastClone, slides[0]);
+    let currentIndex = 0;
+    let currentRotation = 0;
+    let isFlipped = false;
+    let isAnimating = false;
+
+    function updateCardContent(cardElement, index) {
+      const hobby = hobbies[index];
+      cardElement.innerHTML = `
+                <img src="${hobby.img}" alt="${hobby.title}" />
+                <h4>${hobby.title}</h4>
+                <p>${hobby.desc}</p>
+            `;
     }
 
-    const allSlides = Array.from(carousel.children);
-    let currentIndex = totalRealSlides > 1 ? 1 : 0;
-    let isTransitioning = false;
+    function flip(direction) {
+      if (isAnimating) return;
+      isAnimating = true;
 
-    function updateCarouselPosition(instant = false) {
-      if (instant) {
-        carousel.style.transition = "none";
-      } else {
-        carousel.style.transition = "transform 0.4s ease-in-out";
-      }
+      const nextIndex =
+        (currentIndex + direction + hobbies.length) % hobbies.length;
 
-      const slideWidth = allSlides[0].getBoundingClientRect().width;
-      const offset = -currentIndex * slideWidth;
-      carousel.style.transform = `translateX(${offset}px)`;
+      const backCard = isFlipped ? cardFront : cardBack;
+      updateCardContent(backCard, nextIndex);
+
+      currentRotation += 180 * direction;
+      flipper.style.transform = `rotateY(${currentRotation}deg)`;
+
+      isFlipped = !isFlipped;
+      currentIndex = nextIndex;
+
+      setTimeout(() => {
+        isAnimating = false;
+      }, 800);
     }
 
-    nextBtn.addEventListener("click", () => {
-      if (isTransitioning) return;
-      isTransitioning = true;
-      currentIndex++;
-      updateCarouselPosition();
-    });
+    nextBtn.addEventListener("click", () => flip(1));
+    prevBtn.addEventListener("click", () => flip(-1));
 
-    prevBtn.addEventListener("click", () => {
-      if (isTransitioning) return;
-      isTransitioning = true;
-      currentIndex--;
-      updateCarouselPosition();
-    });
-
-    carousel.addEventListener("transitionend", () => {
-      isTransitioning = false;
-      if (totalRealSlides > 1) {
-        if (currentIndex >= allSlides.length - 1) {
-          currentIndex = 1;
-          updateCarouselPosition(true);
-        } else if (currentIndex <= 0) {
-          currentIndex = totalRealSlides;
-          updateCarouselPosition(true);
-        }
-      }
-    });
-
-    // Initial setup
-    updateCarouselPosition(true);
+    updateCardContent(cardFront, currentIndex);
+    updateCardContent(cardBack, (currentIndex + 1) % hobbies.length);
   }
 });
