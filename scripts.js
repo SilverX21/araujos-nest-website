@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // UPDATED: Hobbies array with your local images
   const hobbies = [
     {
       title: "Scouts",
