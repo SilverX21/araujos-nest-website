@@ -106,17 +106,84 @@ document.addEventListener("DOMContentLoaded", function () {
   const hiddenElements = document.querySelectorAll(".hidden");
   hiddenElements.forEach((el) => observer.observe(el));
 
-  const stackCategories = document.querySelectorAll(".stack-category");
+  // --- UPDATED: Tech Stack Click Logic ---
 
+  // NEW: Particle Burst Function
+  function createBurst(canvas) {
+    const ctx = canvas.getContext("2d");
+    const particles = [];
+    const particleCount = 30;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    class BurstParticle {
+      constructor() {
+        this.x = canvas.width / 2;
+        this.y = canvas.height / 2;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 3 - 1.5;
+        this.speedY = Math.random() * 3 - 1.5;
+        this.color = `rgba(0, 122, 204, ${Math.random()})`;
+        this.life = 100;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.size *= 0.98;
+        this.life--;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initBurst() {
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new BurstParticle());
+      }
+    }
+
+    function animateBurst() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.update();
+        p.draw();
+        if (p.life <= 0 || p.size <= 0.2) {
+          particles.splice(i, 1);
+        }
+      }
+      if (particles.length > 0) {
+        requestAnimationFrame(animateBurst);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Final clear
+      }
+    }
+
+    initBurst();
+    animateBurst();
+  }
+
+  const stackCategories = document.querySelectorAll(".stack-category");
   stackCategories.forEach((card) => {
     card.addEventListener("click", () => {
-      if (card.classList.contains("active")) {
-        card.classList.remove("active");
-      } else {
-        stackCategories.forEach((otherCard) => {
-          otherCard.classList.remove("active");
-        });
+      const wasActive = card.classList.contains("active");
+
+      // Deactivate all other cards
+      stackCategories.forEach((otherCard) => {
+        otherCard.classList.remove("active");
+      });
+
+      // Toggle the current card
+      if (!wasActive) {
         card.classList.add("active");
+        const burstCanvas = card.querySelector(".particle-burst-canvas");
+        if (burstCanvas) {
+          createBurst(burstCanvas);
+        }
       }
     });
   });
@@ -134,7 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // UPDATED: Hobbies array with your local images
   const hobbies = [
     {
       title: "Scouts",
