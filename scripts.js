@@ -138,22 +138,22 @@ document.addEventListener("DOMContentLoaded", function () {
     {
       title: "Scouts",
       desc: "Developing leadership and outdoor skills.",
-      img: "https://picsum.photos/400/220?image=1074",
+      img: "public/scouts-logo.jpg",
     },
     {
       title: "SC Braga",
       desc: "Passionate supporter of my hometown club.",
-      img: "https://picsum.photos/400/220?image=431",
+      img: "public/cr7.jpg",
     },
     {
       title: "Music",
       desc: "My daily companion, from rock to chill playlists.",
-      img: "https://picsum.photos/400/220?image=145",
+      img: "public/metallica.jpeg",
     },
     {
       title: "Photography",
       desc: "Capturing moments and landscapes.",
-      img: "https://picsum.photos/400/220?image=25",
+      img: "public/photography.jpeg",
     },
   ];
 
