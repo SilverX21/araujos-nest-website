@@ -37,13 +37,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function init() {
       particlesArray = [];
-      let numberOfParticles = (canvas.height * canvas.width) / 9000;
+      // UPDATED: Increased particle density
+      let numberOfParticles = (canvas.height * canvas.width) / 5000;
       for (let i = 0; i < numberOfParticles; i++) {
         let size = Math.random() * 2 + 1;
         let x = Math.random() * (innerWidth - size * 2 - size * 2) + size * 2;
         let y = Math.random() * (innerHeight - size * 2 - size * 2) + size * 2;
-        let directionX = Math.random() * 0.4 - 0.2;
-        let directionY = Math.random() * 0.4 - 0.2;
+        // UPDATED: Increased particle speed
+        let directionX = Math.random() * 0.6 - 0.3;
+        let directionY = Math.random() * 0.6 - 0.3;
         particlesArray.push(new Particle(x, y, directionX, directionY, size));
       }
     }
@@ -67,7 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
               (particlesArray[a].x - particlesArray[b].x) +
             (particlesArray[a].y - particlesArray[b].y) *
               (particlesArray[a].y - particlesArray[b].y);
-          if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+          // UPDATED: Increased connection distance
+          if (distance < (canvas.width / 6) * (canvas.height / 6)) {
             opacityValue = 1 - distance / 20000;
             ctx.strokeStyle = `rgba(0, 122, 204, ${opacityValue})`;
             ctx.lineWidth = 1;
@@ -106,13 +109,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const hiddenElements = document.querySelectorAll(".hidden");
   hiddenElements.forEach((el) => observer.observe(el));
 
-  // --- UPDATED: Tech Stack Click Logic ---
+  // --- Tech Stack Click Logic ---
 
-  // NEW: Particle Burst Function
+  // UPDATED: Particle Burst Function
   function createBurst(canvas) {
     const ctx = canvas.getContext("2d");
     const particles = [];
-    const particleCount = 30;
+    const particleCount = 50; // Increased particle count
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
@@ -120,16 +123,17 @@ document.addEventListener("DOMContentLoaded", function () {
       constructor() {
         this.x = canvas.width / 2;
         this.y = canvas.height / 2;
-        this.size = Math.random() * 3 + 1;
-        this.speedX = Math.random() * 3 - 1.5;
-        this.speedY = Math.random() * 3 - 1.5;
-        this.color = `rgba(0, 122, 204, ${Math.random()})`;
-        this.life = 100;
+        this.size = Math.random() * 4 + 1; // Slightly larger particles
+        this.speedX = Math.random() * 6 - 3; // More explosive horizontal speed
+        this.speedY = Math.random() * 6 - 3; // More explosive vertical speed
+        this.color = `rgba(0, 122, 204, ${Math.random() * 0.5 + 0.5})`; // Brighter particles
+        this.life = 120; // Longer lifespan
       }
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
-        this.size *= 0.98;
+        this.speedY += 0.05; // Gravity effect
+        this.size *= 0.96; // Fade out a bit slower
         this.life--;
       }
       draw() {
