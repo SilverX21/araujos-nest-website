@@ -1,0 +1,26 @@
+export const profile = {
+  name: 'Nuno Araújo',
+  firstName: 'Nuno',
+  lastName: 'Araújo',
+  role: 'Software Developer',
+  tagline: 'Building robust backends and clean APIs — from Portugal to the cloud.',
+  location: 'Porto, Portugal',
+  nationality: 'Portuguese',
+  photo: '/profile.png',
+  linkedin: 'https://www.linkedin.com/in/nuno-ara%C3%BAjo-202295132',
+  github: 'https://github.com/SilverX21',
+  about: `I'm a software developer with 7+ years of experience building backend systems and APIs, primarily in the .NET ecosystem. I've worked across banking, insurance, IoT, and car inspection domains — always focused on clean, maintainable code and practical solutions. Outside of work, I'm an active Scout leader, travel enthusiast, and forever student who's always picking up something new.`,
+  languages: [
+    { name: 'Portuguese', level: 'Native',        flag: '🇵🇹' },
+    { name: 'English',    level: 'Professional',   flag: '🇬🇧' },
+    { name: 'Spanish',    level: 'Conversational', flag: '🇪🇸' },
+  ],
+  softSkills: [
+    'Teamwork',
+    'Critical Thinking',
+    'Creativity',
+    'Problem Solving',
+    'Determined',
+  ],
+  interests: ['Gym', 'Travelling', 'Photography', 'Football'],
+} as const

@@ -1,230 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/profile.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nuno Araújo | .NET Developer</title>
+    <meta name="description" content="Nuno Araújo — Software Developer. Building robust backends and clean APIs from Portugal to the cloud." />
+    <meta name="keywords" content="Nuno Araújo, Software Developer, .NET, C#, AWS, PostgreSQL, Porto, Portugal" />
+    <meta property="og:title" content="Nuno Araújo | Software Developer" />
+    <meta property="og:description" content="Building robust backends and clean APIs — from Portugal to the cloud." />
+    <meta property="og:type" content="website" />
+    <title>Nuno Araújo | Software Developer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <canvas id="particle-canvas"></canvas>
-
-    <nav>
-      <div class="container">
-        <a href="#home" class="logo">
-          <svg
-            class="logo-svg"
-            viewBox="0 0 105 40"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <text x="0" y="30">
-              <tspan class="logo-brackets">&lt;</tspan>
-              <tspan class="logo-text">NA</tspan>
-              <tspan class="logo-brackets">/&gt;</tspan>
-            </text>
-          </svg>
-        </a>
-        <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="#hobbies">Hobbies</a></li>
-          <li><a href="#stack">Tech Stack</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <header id="home">
-      <div class="container">
-        <div class="hero-content">
-          <h1>
-            Hi
-            <img
-              src="https://user-images.githubusercontent.com/18350557/176309783-0785949b-9127-417c-8b55-ab5a4333674e.gif"
-              alt="Waving hand gif"
-            />, I'm <span id="name-hover">Nuno Araújo</span>
-          </h1>
-          <h3>.NET Developer</h3>
-          <div class="intro-text">
-            <p>
-              👋 I'm a passionate Full Stack Developer specializing in the .NET
-              ecosystem.
-            </p>
-            <p>
-              My focus is on writing clean, efficient code to solve complex
-              problems and build great software.
-            </p>
-          </div>
-          <div class="cta-buttons">
-            <a href="#footer" class="btn btn-primary">Contact Me</a>
-            <a href="#" target="_blank" class="btn btn-secondary"
-              >My Projects</a
-            >
-          </div>
-        </div>
-      </div>
-      <img
-        src="public/run-pikachu.gif"
-        alt="A wild Pikachu appears"
-        id="pikachu"
-      />
-    </header>
-
-    <main>
-      <section id="about">
-        <div class="container">
-          <h2 class="section-title hidden">💫 About Me</h2>
-          <div class="about-content hidden">
-            <ul class="about-list">
-              <li><span>🌍</span> I'm based in Portugal</li>
-              <li><span>🧠</span> I'm learning Docker and AWS</li>
-              <li>
-                <span>🤝</span> I'm open to collaborating on interesting and
-                up-to-date projects in the .NET community
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section id="hobbies">
-        <div class="container">
-          <h2 class="section-title hidden">My Hobbies</h2>
-          <div class="carousel-wrapper">
-            <button class="carousel-btn prev-btn">‹</button>
-            <div class="scene">
-              <div class="hobby-carousel-flipper">
-                <div class="hobby-card card-front"></div>
-                <div class="hobby-card card-back"></div>
-              </div>
-            </div>
-            <button class="carousel-btn next-btn">›</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="stack">
-        <div class="container">
-          <h2 class="section-title hidden">💻 Tech Stack</h2>
-          <div class="stack-grid">
-            <div class="stack-category hidden" data-tech="backend">
-              <canvas class="particle-burst-canvas"></canvas>
-              <h3>💾 Backend</h3>
-              <div class="tech-badges">
-                <img
-                  src="https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white"
-                  alt=".Net"
-                />
-                <img
-                  src="https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white"
-                  alt="C#"
-                />
-                <img
-                  src="https://img.shields.io/badge/Microsoft%20SQL%2C%20Server-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white"
-                  alt="Microsoft SQL Server"
-                />
-                <img
-                  src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white"
-                  alt="Postgres"
-                />
-              </div>
-              <div class="details-box">
-                <p>
-                  Building robust and scalable server-side applications is my
-                  focus, primarily using the .NET framework.
-                </p>
-              </div>
-            </div>
-
-            <div class="stack-category hidden" data-tech="frontend">
-              <canvas class="particle-burst-canvas"></canvas>
-              <h3>👨‍💻 Frontend</h3>
-              <div class="tech-badges">
-                <img
-                  src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white"
-                  alt="HTML5"
-                />
-                <img
-                  src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white"
-                  alt="CSS3"
-                />
-                <img
-                  src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E"
-                  alt="JavaScript"
-                />
-                <img
-                  src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white"
-                  alt="TypeScript"
-                />
-                <img
-                  src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB"
-                  alt="React"
-                />
-              </div>
-              <div class="details-box">
-                <p>
-                  I create responsive and intuitive user interfaces using modern
-                  web technologies like React and TypeScript.
-                </p>
-              </div>
-            </div>
-
-            <div class="stack-category hidden" data-tech="version-control">
-              <canvas class="particle-burst-canvas"></canvas>
-              <h3>🎠 Version Control & CI/CD</h3>
-              <div class="tech-badges">
-                <img
-                  src="https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white"
-                  alt="Git"
-                />
-                <img
-                  src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"
-                  alt="GitHub"
-                />
-              </div>
-              <div class="details-box">
-                <p>
-                  Using Git and GitHub for version control is a core part of my
-                  development workflow for collaboration.
-                </p>
-              </div>
-            </div>
-
-            <div class="stack-category hidden" data-tech="cloud">
-              <canvas class="particle-burst-canvas"></canvas>
-              <h3>☁️ Cloud</h3>
-              <div class="tech-badges">
-                <img
-                  src="https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white"
-                  alt="AWS"
-                />
-                <img
-                  src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white"
-                  alt="Docker"
-                />
-              </div>
-              <div class="details-box">
-                <p>
-                  I am currently expanding my skills in cloud platforms and
-                  containerization with AWS and Docker.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer id="footer">
-      <div class="container">
-        <p>&copy; 2025 Nuno Araújo. All Rights Reserved.</p>
-      </div>
-    </footer>
-
-    <script src="scripts.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
