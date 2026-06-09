@@ -99,7 +99,7 @@ export function About() {
                           <span
                             key={i}
                             className={`lang-signal-bar ${i < LEVEL_BARS[lang.level] ? 'active' : ''}`}
-                            style={{ height: `${8 + i * 5}px` }}
+                            style={{ height: `${5 + i * 4}px` }}
                           />
                         ))}
                       </div>

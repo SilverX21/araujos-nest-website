@@ -522,15 +522,29 @@ html.light {
     margin-bottom: 1rem;
   }
 
+  /* Mobile: horizontal scroll carousel */
   .about-lang-list {
     display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+    flex-direction: row;
+    gap: 0.65rem;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px; /* room for tilt glow */
   }
 
-  /* Tilt wrapper — fills the flex column naturally */
+  .about-lang-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Tilt wrapper — carousel card on mobile, flex-1 on desktop */
   .about-lang-tilt {
-    display: block;
+    flex-shrink: 0;
+    width: 78vw;
+    max-width: 290px;
+    scroll-snap-align: start;
     transform-style: preserve-3d;
   }
 
@@ -541,12 +555,13 @@ html.light {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    padding: 1.25rem 1.4rem;
+    gap: 0.85rem;
+    padding: 0.9rem 1.1rem;
     background: var(--color-elevated);
     border: 1px solid var(--color-border);
     border-radius: 12px;
-    min-height: 92px;
+    min-height: 76px;
+    height: 100%;
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
@@ -575,11 +590,11 @@ html.light {
 
   .lang-level-text {
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: 0.6rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-cyan);
-    margin-bottom: 0.55rem;
+    margin-bottom: 0.4rem;
   }
 
   /* Signal-strength bars (mobile antenna metaphor) */
@@ -603,8 +618,8 @@ html.light {
 
   /* Right: flag in a glowing circle */
   .lang-flag-ring {
-    width: 58px;
-    height: 58px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
@@ -907,6 +922,21 @@ html.light {
 
 .section-heading {
   text-align: center;
+}
+
+/* Language cards — desktop: 3 in a row, no carousel */
+@media (min-width: 768px) {
+  .about-lang-list {
+    overflow-x: visible;
+    flex-wrap: nowrap;
+  }
+
+  .about-lang-tilt {
+    flex: 1;
+    width: auto;
+    max-width: none;
+    scroll-snap-align: none;
+  }
 }
 
 /* About — two-column from md (768px) */
