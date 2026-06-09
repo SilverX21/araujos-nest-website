@@ -644,6 +644,157 @@ html.light {
     display: block;
   }
 
+  /* ── Orbital Skill Rings ── */
+
+  /* Outer container — fixed square, centered */
+  .skill-orbit {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    margin: 0.5rem auto 2rem;
+  }
+
+  /* Dashed orbit path circles */
+  .skill-orbit-path {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px dashed rgba(0, 194, 255, 0.12);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .skill-orbit-path--inner {
+    width: 180px;   /* 2 × 90px radius */
+    height: 180px;
+  }
+
+  .skill-orbit-path--outer {
+    width: 296px;   /* 2 × 148px radius */
+    height: 296px;
+  }
+
+  /* Hub — cut-corner gem shape centred in the orbit system */
+  .skill-orbit-hub {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    z-index: 2;
+  }
+
+  .skill-orbit-hub-gem {
+    width: 64px;
+    height: 64px;
+    clip-path: polygon(
+      14px 0%, calc(100% - 14px) 0%,
+      100% 14px, 100% calc(100% - 14px),
+      calc(100% - 14px) 100%, 14px 100%,
+      0% calc(100% - 14px), 0% 14px
+    );
+    background: var(--color-elevated);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter:
+      drop-shadow(0 0 1px rgba(0, 194, 255, 0.5))
+      drop-shadow(0 0 8px rgba(0, 194, 255, 0.15));
+  }
+
+  .skill-orbit-hub-label {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+    white-space: nowrap;
+  }
+
+  /*
+    Zero-size pivot element at the container centre.
+    Rotates clockwise — carries the badge with it.
+  */
+  .orbit-point {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    animation: orbit-cw 14s linear infinite;
+  }
+
+  .orbit-point--outer {
+    animation-duration: 22s;
+  }
+
+  @keyframes orbit-cw {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /*
+    The visible badge:
+    - `left: radius` places it on the orbit circumference
+    - counter-rotates at the same speed to stay upright
+    - translate(-50%, -50%) centres it on the orbit point
+  */
+  .orbit-badge {
+    position: absolute;
+    left: 90px;   /* inner radius */
+    top: 0;
+    animation: orbit-ccw 14s linear infinite;
+
+    /* Cut-corner chip — matches soft-chip design language */
+    display: inline-flex;
+    align-items: center;
+    padding: 0.38rem 0.8rem;
+    background: var(--color-elevated);
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    cursor: default;
+    clip-path: polygon(
+      8px 0%, calc(100% - 8px) 0%,
+      100% 8px, 100% calc(100% - 8px),
+      calc(100% - 8px) 100%, 8px 100%,
+      0% calc(100% - 8px), 0% 8px
+    );
+    filter: drop-shadow(0 0 0.5px rgba(0, 194, 255, 0.28));
+    transition: filter 0.2s ease, background 0.2s ease, color 0.2s ease;
+  }
+
+  .orbit-badge--outer {
+    left: 148px;   /* outer radius */
+    animation-duration: 22s;
+  }
+
+  @keyframes orbit-ccw {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(-360deg); }
+  }
+
+  /* Pause both the pivot and badge on hover */
+  .orbit-point:has(.orbit-badge:hover) {
+    animation-play-state: paused;
+  }
+
+  .orbit-badge:hover {
+    animation-play-state: paused;
+    background: var(--color-cyan-dim);
+    color: var(--color-cyan);
+    filter:
+      drop-shadow(0 0 1px var(--color-cyan))
+      drop-shadow(0 0 10px rgba(0, 194, 255, 0.3));
+  }
+
   /* ── Cyber-Glass Magnetic Chips (soft skills) ── */
   .soft-chips-container {
     display: flex;
@@ -953,6 +1104,15 @@ html.light {
 
 .section-heading {
   text-align: center;
+}
+
+/* Orbital rings — scale down on mobile to fit */
+@media (max-width: 639px) {
+  .skill-orbit {
+    transform: scale(0.78);
+    transform-origin: center top;
+    margin-bottom: -3rem; /* compensate for scaled height */
+  }
 }
 
 /* Language cards — desktop: 3 in a row, no carousel */

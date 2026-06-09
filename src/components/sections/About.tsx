@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react'
-import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Tilt from 'react-parallax-tilt'
 import { MessageSquare, Globe, Heart, Dumbbell, Camera, Plane, Swords } from 'lucide-react'
 import { SectionTitle } from '../ui/SectionTitle'
@@ -11,27 +10,16 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as number[] } },
 }
 
-// ISO country codes for flag images (flagcdn.com)
 const FLAG_CODES: Record<string, string> = {
   'Portuguese': 'pt',
   'English':    'gb',
   'Spanish':    'es',
 }
 
-// Number of signal bars lit per proficiency level (out of 5)
 const LEVEL_BARS: Record<string, number> = {
   'Native':        5,
   'Professional':  4,
   'Conversational':3,
-}
-
-// One-liner descriptor revealed on chip hover
-const SKILL_DESCRIPTORS: Record<string, string> = {
-  'Teamwork':         'Collaborative by default',
-  'Critical Thinking':'Questions first, solutions second',
-  'Creativity':       'Finds the angle others miss',
-  'Problem Solving':  'Thrives under ambiguity',
-  'Determined':       'Always finishes what gets started',
 }
 
 const INTEREST_ICONS: Record<string, React.ReactNode> = {
@@ -41,59 +29,69 @@ const INTEREST_ICONS: Record<string, React.ReactNode> = {
   'Football':    <Swords    size={15} />,
 }
 
-// ── Cyber-Glass Magnetic Chip ─────────────────────────────────────────────
-function MagneticChip({ skill, descriptor, delay = 0 }: { skill: string; descriptor: string; delay?: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [hovered, setHovered] = useState(false)
+// Skills split across two orbit rings
+const INNER_SKILLS = [profile.softSkills[0], profile.softSkills[1]]              // Teamwork, Critical Thinking
+const OUTER_SKILLS = [profile.softSkills[2], profile.softSkills[3], profile.softSkills[4]] // Creativity, Problem Solving, Determined
+const INNER_DUR    = 14  // seconds — inner ring
+const OUTER_DUR    = 22  // seconds — outer ring (slower)
 
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const sx = useSpring(x, { stiffness: 280, damping: 18 })
-  const sy = useSpring(y, { stiffness: 280, damping: 18 })
-
-  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = ref.current
-    if (!el) return
-    const { left, top, width, height } = el.getBoundingClientRect()
-    x.set((e.clientX - (left + width / 2)) * 0.3)
-    y.set((e.clientY - (top  + height / 2)) * 0.3)
-  }
-
-  const onLeave = () => {
-    x.set(0)
-    y.set(0)
-    setHovered(false)
-  }
-
+// ── Orbital Skill Rings ───────────────────────────────────────────────────
+function SkillOrbit() {
   return (
-    <motion.div
-      ref={ref}
-      className={`soft-chip${hovered ? ' soft-chip--hovered' : ''}`}
-      style={{ x: sx, y: sy }}
-      onMouseMove={onMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={onLeave}
-      initial={{ opacity: 0, scale: 0.82 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <span className="soft-chip-label">{skill}</span>
+    <div className="skill-orbit" aria-label="Soft skills">
+      {/* Dashed orbit path indicators */}
+      <div className="skill-orbit-path skill-orbit-path--inner" aria-hidden="true" />
+      <div className="skill-orbit-path skill-orbit-path--outer" aria-hidden="true" />
 
-      <AnimatePresence>
-        {hovered && (
-          <motion.span
-            className="soft-chip-desc"
-            initial={{ maxWidth: 0, opacity: 0 }}
-            animate={{ maxWidth: 260, opacity: 1 }}
-            exit={{ maxWidth: 0, opacity: 0 }}
-            transition={{ duration: 0.22, ease: 'easeOut' }}
+      {/* Central hub */}
+      <div className="skill-orbit-hub" aria-hidden="true">
+        <div className="skill-orbit-hub-gem">
+          <svg viewBox="0 0 30 19" width={26} height={17}
+            stroke="var(--color-cyan)" strokeWidth={1.75}
+            strokeLinecap="square" fill="none"
           >
-            — {descriptor}
-          </motion.span>
-        )}
-      </AnimatePresence>
-    </motion.div>
+            <polyline points="1,17 1,1 11,17 11,1" />
+            <polyline points="14,17 21,1 28,17" />
+            <line x1="18.3" y1="11" x2="23.7" y2="11" />
+          </svg>
+        </div>
+        <span className="skill-orbit-hub-label">soft skills</span>
+      </div>
+
+      {/* Inner orbit — 2 skills, 180° apart */}
+      {INNER_SKILLS.map((skill, i) => (
+        <div
+          key={skill}
+          className="orbit-point orbit-point--inner"
+          style={{ animationDelay: `${-(i / INNER_SKILLS.length) * INNER_DUR}s` }}
+        >
+          <div
+            className="orbit-badge orbit-badge--inner"
+            style={{ animationDelay: `${-(i / INNER_SKILLS.length) * INNER_DUR}s` }}
+            title={skill}
+          >
+            {skill}
+          </div>
+        </div>
+      ))}
+
+      {/* Outer orbit — 3 skills, 120° apart */}
+      {OUTER_SKILLS.map((skill, i) => (
+        <div
+          key={skill}
+          className="orbit-point orbit-point--outer"
+          style={{ animationDelay: `${-(i / OUTER_SKILLS.length) * OUTER_DUR}s` }}
+        >
+          <div
+            className="orbit-badge orbit-badge--outer"
+            style={{ animationDelay: `${-(i / OUTER_SKILLS.length) * OUTER_DUR}s` }}
+            title={skill}
+          >
+            {skill}
+          </div>
+        </div>
+      ))}
+    </div>
   )
 }
 
@@ -161,7 +159,6 @@ export function About() {
                         ))}
                       </div>
                     </div>
-
                     <div className="lang-flag-ring" aria-hidden="true">
                       <img
                         src={`https://flagcdn.com/w80/${FLAG_CODES[lang.name]}.jpg`}
@@ -169,7 +166,6 @@ export function About() {
                         className="lang-flag-img"
                       />
                     </div>
-
                     <BorderBeam duration={5} />
                   </div>
                 </Tilt>
@@ -178,10 +174,10 @@ export function About() {
           </motion.div>
         </div>
 
-        {/* ── Right: soft skills + interests ── */}
+        {/* ── Right: orbital skills + interests ── */}
         <div className="about-right">
 
-          {/* Soft skills — Cyber-Glass Magnetic Chips */}
+          {/* Soft skills — Orbital Rings */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -192,17 +188,7 @@ export function About() {
               <MessageSquare size={13} />
               Soft Skills
             </p>
-
-            <div className="soft-chips-container">
-              {profile.softSkills.map((skill, i) => (
-                <MagneticChip
-                  key={skill}
-                  skill={skill}
-                  descriptor={SKILL_DESCRIPTORS[skill] ?? ''}
-                  delay={i * 0.07}
-                />
-              ))}
-            </div>
+            <SkillOrbit />
           </motion.div>
 
           {/* Interests */}
