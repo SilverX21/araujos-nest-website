@@ -644,28 +644,64 @@ html.light {
     display: block;
   }
 
-  .about-skills-list {
-    list-style: none;
+  /* ── Cyber-Glass Magnetic Chips (soft skills) ── */
+  .soft-chips-container {
     display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
+    flex-wrap: wrap;
+    gap: 0.6rem;
     margin-bottom: 2rem;
+    justify-content: center; /* mobile default */
   }
 
-  .about-skill-item {
-    display: flex;
+  /*
+    Cut-corner "military spec" shape.
+    clip-path clips the background; drop-shadow
+    follows the shape to simulate a glowing border.
+  */
+  .soft-chip {
+    display: inline-flex;
     align-items: center;
-    gap: 0.65rem;
-    font-size: 0.95rem;
-    color: var(--color-text);
+    padding: 0.55rem 1rem;
+    background: var(--color-elevated);
+    color: var(--color-muted);
+    cursor: default;
+    white-space: nowrap;
+    clip-path: polygon(
+      10px 0%, calc(100% - 10px) 0%,
+      100% 10px, 100% calc(100% - 10px),
+      calc(100% - 10px) 100%, 10px 100%,
+      0% calc(100% - 10px), 0% 10px
+    );
+    filter: drop-shadow(0 0 0.5px rgba(0, 194, 255, 0.28));
+    transition: filter 0.2s ease, background 0.2s ease, color 0.2s ease;
+    will-change: transform;
   }
 
-  .about-skill-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--color-cyan);
-    flex-shrink: 0;
+  .soft-chip--hovered {
+    background: var(--color-cyan-dim);
+    color: var(--color-cyan);
+    filter:
+      drop-shadow(0 0 1px var(--color-cyan))
+      drop-shadow(0 0 10px rgba(0, 194, 255, 0.28));
+  }
+
+  .soft-chip-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+
+  /* Descriptor — revealed on hover via maxWidth animation */
+  .soft-chip-desc {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+    margin-left: 0.5rem;
   }
 
   .about-interests {
@@ -897,17 +933,12 @@ html.light {
 .about-bio,
 .about-block-label,
 .about-lang-list,
-.about-skills-list,
-.about-skill-item,
+.soft-chips-container,
 .about-interests {
   text-align: center;
 }
 
 .about-block-label {
-  justify-content: center;
-}
-
-.about-skill-item {
   justify-content: center;
 }
 
@@ -952,8 +983,7 @@ html.light {
   .about-bio,
   .about-block-label,
   .about-lang-list,
-  .about-skills-list,
-  .about-skill-item,
+  .soft-chips-container,
   .about-interests {
     text-align: left;
   }
@@ -962,11 +992,8 @@ html.light {
     justify-content: flex-start;
   }
 
-  .about-skill-item {
-    justify-content: flex-start;
-  }
-
-  .about-interests {
+  .about-interests,
+  .soft-chips-container {
     justify-content: flex-start;
   }
 
