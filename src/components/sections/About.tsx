@@ -16,6 +16,8 @@ export default function About() {
         padding: '8rem 1.5rem',
         maxWidth: '1200px',
         margin: '0 auto',
+        width: '100%',
+        boxSizing: 'border-box',
       }}
     >
       <motion.div
@@ -33,9 +35,10 @@ export default function About() {
         </motion.div>
 
         <div
+          className="about-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))',
             gap: '1.5rem',
           }}
         >
@@ -43,9 +46,8 @@ export default function About() {
           <motion.div
             variants={fadeInUp}
             transition={{ duration: 0.65 }}
-            className="jarvis-card"
+            className="jarvis-card md:col-span-2"
             style={{
-              gridColumn: 'span 2',
               padding: '2rem',
               background: 'var(--color-surface)',
               border: '1px solid var(--color-border)',

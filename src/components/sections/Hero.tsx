@@ -209,7 +209,7 @@ export default function Hero() {
           padding: "80px 1.5rem 0",
           width: "100%",
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))",
           gap: "4rem",
           alignItems: "center",
           position: "relative",
