@@ -1,1356 +1,288 @@
 @import "tailwindcss";
 
-/* ─────────────────────────────────────────────
-   DESIGN TOKENS
-   ───────────────────────────────────────────── */
 @theme {
-  /* Typography */
-  --font-display: "Syne", sans-serif;
-  --font-sans:    "Outfit", sans-serif;
-  --font-mono:    "JetBrains Mono", monospace;
-
-  /* Dark mode palette (default) */
-  --color-bg:           #07090F;
-  --color-surface:      #0D1117;
-  --color-elevated:     #141B27;
-  --color-cyan:         #00C2FF;
-  --color-cyan-dim:     rgba(0, 194, 255, 0.12);
-  --color-orange:       #FF6B35;
-  --color-orange-dim:   rgba(255, 107, 53, 0.12);
-  --color-emerald:      #00D68F;
-  --color-emerald-dim:  rgba(0, 214, 143, 0.12);
-  --color-text:         #EEF2FF;
-  --color-muted:        #8892A4;
-  --color-faint:        #4A5568;
-  --color-border:       rgba(0, 194, 255, 0.08);
+  --color-bg: #07090F;
+  --color-surface: #0D1117;
+  --color-elevated: #141B27;
+  --color-cyan: #00C2FF;
+  --color-cyan-dim: rgba(0, 194, 255, 0.12);
+  --color-orange: #FF6B35;
+  --color-orange-dim: rgba(255, 107, 53, 0.12);
+  --color-emerald: #00D68F;
+  --color-emerald-dim: rgba(0, 214, 143, 0.12);
+  --color-text: #EEF2FF;
+  --color-muted: #8892A4;
+  --color-faint: #4A5568;
+  --color-border: rgba(0, 194, 255, 0.08);
   --color-border-hover: rgba(0, 194, 255, 0.25);
+
+  --font-display: "Syne", sans-serif;
+  --font-sans: "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
-/* ─────────────────────────────────────────────
-   LIGHT MODE OVERRIDES
-   ───────────────────────────────────────────── */
+/* Light mode overrides */
 html.light {
-  --color-bg:           #F0F4F8;
-  --color-surface:      #FFFFFF;
-  --color-elevated:     #E2EAF0;
-  --color-cyan:         #0077B6;
-  --color-cyan-dim:     rgba(0, 119, 182, 0.1);
-  --color-orange:       #C84B11;
-  --color-orange-dim:   rgba(200, 75, 17, 0.1);
-  --color-emerald:      #00875A;
-  --color-emerald-dim:  rgba(0, 135, 90, 0.1);
-  --color-text:         #0D1B2A;
-  --color-muted:        #4A6070;
-  --color-faint:        #94A3B8;
-  --color-border:       rgba(0, 119, 182, 0.12);
+  --color-bg: #F0F4F8;
+  --color-surface: #FFFFFF;
+  --color-elevated: #E2EAF0;
+  --color-cyan: #0077B6;
+  --color-orange: #C84B11;
+  --color-emerald: #00875A;
+  --color-text: #0D1B2A;
+  --color-muted: #4A6070;
+  --color-faint: #94A3B8;
+  --color-border: rgba(0, 119, 182, 0.12);
   --color-border-hover: rgba(0, 119, 182, 0.3);
+  --color-cyan-dim: rgba(0, 119, 182, 0.1);
+  --color-orange-dim: rgba(200, 75, 17, 0.1);
+  --color-emerald-dim: rgba(0, 135, 90, 0.1);
 }
 
-/* ─────────────────────────────────────────────
-   BASE
-   ───────────────────────────────────────────── */
-@layer base {
-  *, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  body {
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    line-height: 1.65;
-    overflow-x: hidden;
-    transition: background-color 0.35s ease, color 0.35s ease;
-  }
-
-  /* Dot-grid texture — fixed, full-screen, behind everything */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: radial-gradient(var(--color-border) 1px, transparent 1px);
-    background-size: 28px 28px;
-    pointer-events: none;
-    z-index: 0;
-    transition: background-image 0.35s ease;
-  }
-
-  #root {
-    position: relative;
-    z-index: 1;
-  }
-
-  ::selection {
-    background-color: var(--color-cyan);
-    color: var(--color-bg);
-  }
-
-  h1, h2, h3, h4 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    line-height: 1.1;
-    color: var(--color-text);
-    letter-spacing: -0.02em;
-  }
-
-  a {
-    color: var(--color-cyan);
-    text-decoration: none;
-    transition: opacity 0.2s;
-  }
-
-  a:hover {
-    opacity: 0.8;
-  }
-
-  /* Styled scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--color-bg); }
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-border-hover);
-    border-radius: 3px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-cyan);
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* ─────────────────────────────────────────────
-   COMPONENT CLASSES
-   ───────────────────────────────────────────── */
-@layer components {
-
-  /* ── Section container ── */
-  .section-container {
-    position: relative;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 6rem 1.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .section-container {
-      padding: 7rem 3rem;
-    }
-  }
-
-  /* ── Section label (monospace, cyan, uppercase with leading line) ── */
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--color-cyan);
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .section-label::before {
-    content: '';
-    display: inline-block;
-    width: 24px;
-    height: 1px;
-    background: var(--color-cyan);
-    flex-shrink: 0;
-  }
-
-  /* ── Section heading ── */
-  .section-heading {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    color: var(--color-text);
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-    margin-bottom: 3rem;
-  }
-
-  /* ── Background section number (barely visible, Syne 800, large) ── */
-  .section-number {
-    position: absolute;
-    top: 3.5rem;
-    right: 0;
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(6rem, 15vw, 12rem);
-    color: var(--color-border);
-    line-height: 1;
-    pointer-events: none;
-    user-select: none;
-    letter-spacing: -0.05em;
-    transition: color 0.35s ease;
-  }
-
-  /* ── Glass card ── */
-  .glass-card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-  }
-
-  .glass-card:hover {
-    border-color: var(--color-border-hover);
-    box-shadow:
-      0 0 24px rgba(0, 194, 255, 0.08),
-      0 8px 32px rgba(0, 0, 0, 0.3);
-    transform: translateY(-2px);
-  }
-
-  html.light .glass-card:hover {
-    box-shadow:
-      0 0 24px rgba(0, 119, 182, 0.1),
-      0 8px 32px rgba(0, 0, 0, 0.08);
-  }
-
-  /* ── Skill tags ── */
-  .skill-tag {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 500;
-    padding: 0.3rem 0.7rem;
-    border-radius: 4px;
-    border: 1px solid var(--color-border);
-    background: var(--color-elevated);
-    color: var(--color-muted);
-    display: inline-flex;
-    align-items: center;
-    white-space: nowrap;
-    transition: border-color 0.2s, color 0.2s, background 0.2s;
-    cursor: default;
-  }
-
-  .skill-tag:hover {
-    border-color: var(--color-cyan);
-    color: var(--color-cyan);
-    background: var(--color-cyan-dim);
-  }
-
-  /* Colour variants by skill category */
-  .skill-tag.cyan {
-    border-color: rgba(0, 194, 255, 0.3);
-    color: var(--color-cyan);
-    background: var(--color-cyan-dim);
-  }
-
-  .skill-tag.orange {
-    border-color: rgba(255, 107, 53, 0.3);
-    color: var(--color-orange);
-    background: var(--color-orange-dim);
-  }
-
-  .skill-tag.emerald {
-    border-color: rgba(0, 214, 143, 0.3);
-    color: var(--color-emerald);
-    background: var(--color-emerald-dim);
-  }
-
-  /* ── Buttons ── */
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.75rem;
-    background: var(--color-cyan);
-    color: var(--color-bg);
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 0.9rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
-  }
-
-  .btn-primary:hover {
-    opacity: 0.9;
-    color: var(--color-bg);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 194, 255, 0.3);
-  }
-
-  html.light .btn-primary:hover {
-    box-shadow: 0 6px 20px rgba(0, 119, 182, 0.3);
-  }
-
-  .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.75rem;
-    background: transparent;
-    color: var(--color-text);
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 0.9rem;
-    border-radius: 8px;
-    border: 1px solid var(--color-border-hover);
-    cursor: pointer;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: border-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
-  }
-
-  .btn-outline:hover {
-    border-color: var(--color-cyan);
-    color: var(--color-cyan);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(0, 194, 255, 0.1);
-  }
-
-  /* ── Navbar ── */
-  .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    padding: 0 1.5rem;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    background: rgba(7, 9, 15, 0.82);
-    border-bottom: 1px solid var(--color-border);
-    transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
-  }
-
-  html.light .navbar {
-    background: rgba(240, 244, 248, 0.88);
-  }
-
-  /* ── Timeline ── */
-  .timeline-line {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: linear-gradient(
-      to bottom,
-      transparent,
-      var(--color-border-hover) 10%,
-      var(--color-border-hover) 90%,
-      transparent
-    );
-    transform: translateX(-50%);
-  }
-
-  .timeline-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--color-cyan);
-    border: 2px solid var(--color-bg);
-    box-shadow:
-      0 0 0 3px rgba(0, 194, 255, 0.2),
-      0 0 12px rgba(0, 194, 255, 0.4);
-    flex-shrink: 0;
-  }
-
-  /* ── Certification platform badges ── */
-  .badge {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    padding: 0.2rem 0.55rem;
-    border-radius: 4px;
-    border: 1px solid;
-    display: inline-block;
-  }
-
-  .badge-udemy {
-    background: rgba(160, 80, 240, 0.15);
-    color: #A050F0;
-    border-color: rgba(160, 80, 240, 0.3);
-  }
-
-  .badge-dometrain {
-    background: var(--color-orange-dim);
-    color: var(--color-orange);
-    border-color: rgba(255, 107, 53, 0.3);
-  }
-
-  .badge-mosh {
-    background: var(--color-cyan-dim);
-    color: var(--color-cyan);
-    border-color: rgba(0, 194, 255, 0.3);
-  }
-
-  .badge-rumos {
-    background: var(--color-emerald-dim);
-    color: var(--color-emerald);
-    border-color: rgba(0, 214, 143, 0.3);
-  }
-
-  /* ── Gradient text utility ── */
-  .gradient-text {
-    background: linear-gradient(135deg, var(--color-cyan) 0%, #60A5FA 50%, var(--color-orange) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  html.light .gradient-text {
-    background: linear-gradient(135deg, var(--color-cyan) 0%, #2563EB 50%, var(--color-orange) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  /* ── Hero grid ── */
-  .hero-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-  }
-
-  /* ── Hero text elements ── */
-  .hero-name {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(3rem, 10vw, 6rem);
-    line-height: 1;
-    letter-spacing: -0.03em;
-    margin: 1rem 0;
-  }
-
-  .hero-meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .hero-tagline {
-    font-size: clamp(1rem, 2.5vw, 1.15rem);
-    color: var(--color-muted);
-    line-height: 1.7;
-    max-width: 520px;
-    margin-bottom: 2rem;
-  }
-
-  /* ── Available badge ── */
-  .available-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    color: var(--color-emerald);
-    background: var(--color-emerald-dim);
-    border: 1px solid rgba(0, 214, 143, 0.25);
-    border-radius: 100px;
-    padding: 0.3rem 0.85rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .available-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-emerald);
-    flex-shrink: 0;
-    animation: glow-pulse 2.5s ease-in-out infinite;
-  }
-
-  /* ── Hero photo (hidden on mobile, shown from sm+) ── */
-  .hero-photo {
-    display: none;
-    justify-content: center;
-    align-items: center;
-  }
-
-  /* ── Photo ring ── */
-  .photo-ring-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 160px;
-    height: 160px;
-  }
-
-  .photo-ring-img {
-    width: 148px;
-    height: 148px;
-  }
-
-  /* ── About section ── */
-  .about-grid {
-    display: grid;
-    gap: 3rem;
-  }
-
-  .about-bio {
-    font-size: clamp(1rem, 2vw, 1.1rem);
-    color: var(--color-muted);
-    line-height: 1.8;
-    margin-bottom: 2rem;
-  }
-
-  .about-block-label {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-cyan);
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
-  }
-
-  /* ── Language carousel (embla) ── */
-  .lang-carousel-wrapper {
-    position: relative;
-  }
-
-  /* Embla viewport — clips the sliding content */
-  .lang-embla__viewport {
-    overflow: hidden;
-    width: 100%;
-  }
-
-  /* Embla container — the scrolling flex row */
-  .lang-embla__container {
-    display: flex;
-    touch-action: pan-y pinch-zoom;
-  }
-
-  /* Each slide — 85 % wide on mobile so the next card peeks */
-  .lang-embla__slide {
-    flex: 0 0 85%;
-    min-width: 0;
-    padding-right: 0.75rem;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Tilt wrapper fills the slide */
-  .about-lang-tilt {
-    width: 100%;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    transform-style: preserve-3d;
-  }
-
-  /* Controls row: prev · dots · next */
-  .lang-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-top: 0.9rem;
-  }
-
-  /* Arrow buttons */
-  .lang-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 1px solid var(--color-border-hover);
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--color-muted);
-    cursor: pointer;
-    transition: border-color 0.2s, color 0.2s, background 0.2s;
-    flex-shrink: 0;
-  }
-
-  .lang-arrow:hover:not(:disabled) {
-    border-color: var(--color-cyan);
-    color: var(--color-cyan);
-    background: rgba(0, 194, 255, 0.08);
-  }
-
-  .lang-arrow:disabled {
-    opacity: 0.25;
-    cursor: default;
-  }
-
-  /* Pagination dots */
-  .lang-dots {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-  }
-
-  .lang-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-border-hover);
-    cursor: pointer;
-    transition: background 0.3s ease, width 0.3s ease, border-radius 0.3s ease;
-  }
-
-  .lang-dot--active {
-    width: 20px;
-    border-radius: 3px;
-    background: var(--color-cyan);
-    box-shadow: 0 0 8px rgba(0, 194, 255, 0.5);
-  }
-
-  /* ── Language card: passport-style vertical card ── */
-  .lang-card {
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    background: var(--color-elevated);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    height: 100%;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
-  }
-
-  .lang-card:hover {
-    border-color: var(--color-border-hover);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 194, 255, 0.07);
-  }
-
-  /* Flag banner — top portion of the card */
-  .lang-flag-banner {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 3 / 2;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-
-  /* Gradient vignette at the bottom of the flag, blends into card body */
-  .lang-flag-banner::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      transparent 35%,
-      rgba(20, 27, 39, 0.85) 100%
-    );
-    pointer-events: none;
-  }
-
-  .lang-flag-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.55s ease;
-  }
-
-  .lang-card:hover .lang-flag-img {
-    transform: scale(1.06);
-  }
-
-  /* Card body — language name + level-row */
-  .lang-card-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.7rem 0.85rem 0.85rem;
-    flex: 1;
-  }
-
-  .lang-name {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--color-text);
-    line-height: 1;
-    white-space: nowrap;
-  }
-
-  /* Level text + signal bars wrapper */
-  /* Mobile/tablet default: stacked, centred */
-  .lang-level-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.35rem;
-    margin-top: 0.1rem;
-  }
-
-  .lang-level-text {
-    font-family: var(--font-mono);
-    font-size: 0.57rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-cyan);
-  }
-
-  /* Signal-strength bars */
-  .lang-signal {
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-  }
-
-  .lang-signal-bar {
-    width: 5px;
-    border-radius: 2px;
-    background: var(--color-border);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .lang-signal-bar.active {
-    background: linear-gradient(to top, var(--color-cyan), var(--color-emerald));
-    box-shadow: 0 0 7px rgba(0, 194, 255, 0.45);
-  }
-
-  /* ── Orbital Skill Rings ── */
-
-  /* Outer container — fixed square, centered */
-  .skill-orbit {
-    position: relative;
-    width: 320px;
-    height: 320px;
-    margin: 0.5rem auto 2rem;
-  }
-
-  /* Dashed orbit path circles */
-  .skill-orbit-path {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border-radius: 50%;
-    border: 1px dashed rgba(0, 194, 255, 0.12);
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-  }
-
-  .skill-orbit-path--inner {
-    width: 180px;   /* 2 × 90px radius */
-    height: 180px;
-  }
-
-  .skill-orbit-path--outer {
-    width: 296px;   /* 2 × 148px radius */
-    height: 296px;
-  }
-
-  /* Hub — cut-corner gem shape centred in the orbit system */
-  .skill-orbit-hub {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-    z-index: 2;
-  }
-
-  .skill-orbit-hub-gem {
-    width: 64px;
-    height: 64px;
-    clip-path: polygon(
-      14px 0%, calc(100% - 14px) 0%,
-      100% 14px, 100% calc(100% - 14px),
-      calc(100% - 14px) 100%, 14px 100%,
-      0% calc(100% - 14px), 0% 14px
-    );
-    background: var(--color-elevated);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    filter:
-      drop-shadow(0 0 1px rgba(0, 194, 255, 0.5))
-      drop-shadow(0 0 8px rgba(0, 194, 255, 0.15));
-  }
-
-  .skill-orbit-hub-label {
-    font-family: var(--font-mono);
-    font-size: 0.52rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-faint);
-    white-space: nowrap;
-  }
-
-  /*
-    Zero-size pivot element at the container centre.
-    Rotates clockwise — carries the badge with it.
-  */
-  .orbit-point {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    animation: orbit-cw 14s linear infinite;
-  }
-
-  .orbit-point--outer {
-    animation-duration: 22s;
-  }
-
-  @keyframes orbit-cw {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-
-  /*
-    The visible badge:
-    - `left: radius` places it on the orbit circumference
-    - counter-rotates at the same speed to stay upright
-    - translate(-50%, -50%) centres it on the orbit point
-  */
-  .orbit-badge {
-    position: absolute;
-    left: 90px;   /* inner radius */
-    top: 0;
-    animation: orbit-ccw 14s linear infinite;
-
-    /* Cut-corner chip — matches soft-chip design language */
-    display: inline-flex;
-    align-items: center;
-    padding: 0.38rem 0.8rem;
-    background: var(--color-elevated);
-    color: var(--color-muted);
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-    cursor: default;
-    clip-path: polygon(
-      8px 0%, calc(100% - 8px) 0%,
-      100% 8px, 100% calc(100% - 8px),
-      calc(100% - 8px) 100%, 8px 100%,
-      0% calc(100% - 8px), 0% 8px
-    );
-    filter: drop-shadow(0 0 0.5px rgba(0, 194, 255, 0.28));
-    transition: filter 0.2s ease, background 0.2s ease, color 0.2s ease;
-  }
-
-  .orbit-badge--outer {
-    left: 148px;   /* outer radius */
-    animation-duration: 22s;
-  }
-
-  @keyframes orbit-ccw {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to   { transform: translate(-50%, -50%) rotate(-360deg); }
-  }
-
-  /* Pause both the pivot and badge on hover */
-  .orbit-point:has(.orbit-badge:hover) {
-    animation-play-state: paused;
-  }
-
-  .orbit-badge:hover {
-    animation-play-state: paused;
-    background: var(--color-cyan-dim);
-    color: var(--color-cyan);
-    filter:
-      drop-shadow(0 0 1px var(--color-cyan))
-      drop-shadow(0 0 10px rgba(0, 194, 255, 0.3));
-  }
-
-  /* ── Cyber-Glass Magnetic Chips (soft skills) ── */
-  .soft-chips-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-bottom: 2rem;
-    justify-content: center; /* mobile default */
-  }
-
-  /*
-    Cut-corner "military spec" shape.
-    clip-path clips the background; drop-shadow
-    follows the shape to simulate a glowing border.
-  */
-  .soft-chip {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.55rem 1rem;
-    background: var(--color-elevated);
-    color: var(--color-muted);
-    cursor: default;
-    white-space: nowrap;
-    clip-path: polygon(
-      10px 0%, calc(100% - 10px) 0%,
-      100% 10px, 100% calc(100% - 10px),
-      calc(100% - 10px) 100%, 10px 100%,
-      0% calc(100% - 10px), 0% 10px
-    );
-    filter: drop-shadow(0 0 0.5px rgba(0, 194, 255, 0.28));
-    transition: filter 0.2s ease, background 0.2s ease, color 0.2s ease;
-    will-change: transform;
-  }
-
-  .soft-chip--hovered {
-    background: var(--color-cyan-dim);
-    color: var(--color-cyan);
-    filter:
-      drop-shadow(0 0 1px var(--color-cyan))
-      drop-shadow(0 0 10px rgba(0, 194, 255, 0.28));
-  }
-
-  .soft-chip-label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-  }
-
-  /* Descriptor — revealed on hover via maxWidth animation */
-  .soft-chip-desc {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    color: var(--color-muted);
-    letter-spacing: 0.04em;
-    margin-left: 0.5rem;
-  }
-
-  .about-interests {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-
-  .about-interest-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--color-orange);
-    background: var(--color-orange-dim);
-    border: 1px solid rgba(255, 107, 53, 0.25);
-    border-radius: 6px;
-    padding: 0.4rem 0.8rem;
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  .about-interest-tag:hover {
-    border-color: var(--color-orange);
-    background: rgba(255, 107, 53, 0.18);
-  }
-
-  /* ── Icon button (navbar actions) ── */
-  .icon-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    background: transparent;
-    color: var(--color-muted);
-    cursor: pointer;
-    transition: border-color 0.2s, color 0.2s;
-  }
-
-  .icon-btn:hover {
-    border-color: var(--color-border-hover);
-    color: var(--color-cyan);
-  }
+html {
+  scroll-behavior: smooth;
 }
 
-/* ─────────────────────────────────────────────
-   ANIMATIONS
-   ───────────────────────────────────────────── */
-/* ─────────────────────────────────────────────
-   BORDER BEAM — registered custom property lets
-   us animate --beam-angle inside a keyframe
-   ───────────────────────────────────────────── */
-@property --beam-angle {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes beam-rotate {
-  to { --beam-angle: 360deg; }
-}
-
-/*
-  Sits inside any position:relative parent.
-  Uses the mask XOR trick to show only the 1px
-  border area, then fills it with a rotating
-  conic-gradient beam.
-*/
-.border-beam-element {
-  pointer-events: none;
-  position: absolute;
+/* Dot grid background */
+body::before {
+  content: '';
+  position: fixed;
   inset: 0;
-  border-radius: inherit;
-  padding: var(--beam-width, 1px);
-  background: conic-gradient(
-    from var(--beam-angle),
-    transparent 62%,
-    var(--beam-from, #00C2FF) 78%,
-    var(--beam-to,   #00D68F) 90%,
-    transparent 100%
+  background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 194, 255, 0.008) 2px,
+    rgba(0, 194, 255, 0.008) 4px
   );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: beam-rotate var(--beam-duration, 6s) linear infinite;
+  pointer-events: none;
+  z-index: 0;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-8px); }
+#root {
+  position: relative;
+  z-index: 1;
 }
 
-@keyframes glow-pulse {
+*:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-faint);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-cyan);
+}
+
+/* Font helpers */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono-custom {
+  font-family: var(--font-mono);
+}
+
+/* JARVIS card with corner brackets */
+.jarvis-card {
+  position: relative;
+}
+.jarvis-card::before,
+.jarvis-card::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--color-cyan);
+  border-style: solid;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.jarvis-card::before {
+  top: 0;
+  left: 0;
+  border-width: 1.5px 0 0 1.5px;
+}
+.jarvis-card::after {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1.5px 1.5px 0;
+}
+.jarvis-card:hover::before,
+.jarvis-card:hover::after {
+  opacity: 1;
+}
+
+/* Also add top-right and bottom-left brackets via a wrapper */
+.jarvis-card .corner-tr,
+.jarvis-card .corner-bl {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--color-cyan);
+  border-style: solid;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.jarvis-card .corner-tr {
+  top: 0;
+  right: 0;
+  border-width: 1.5px 1.5px 0 0;
+}
+.jarvis-card .corner-bl {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1.5px 1.5px;
+}
+.jarvis-card:hover .corner-tr,
+.jarvis-card:hover .corner-bl {
+  opacity: 0.7;
+}
+
+/* Animations */
+@keyframes arc-pulse {
   0%, 100% {
-    box-shadow:
-      0 0 0 3px rgba(0, 214, 143, 0.2),
-      0 0 10px rgba(0, 214, 143, 0.3);
+    box-shadow: 0 0 12px rgba(0, 194, 255, 0.4), 0 0 24px rgba(0, 194, 255, 0.2), inset 0 0 12px rgba(0, 194, 255, 0.1);
   }
   50% {
-    box-shadow:
-      0 0 0 5px rgba(0, 214, 143, 0.08),
-      0 0 20px rgba(0, 214, 143, 0.5);
+    box-shadow: 0 0 24px rgba(0, 194, 255, 0.7), 0 0 48px rgba(0, 194, 255, 0.35), inset 0 0 24px rgba(0, 194, 255, 0.2);
   }
 }
 
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  to { transform: rotate(360deg); }
 }
 
-@keyframes scroll-bounce {
-  0%, 100% { transform: translateY(0);   opacity: 1; }
-  50%       { transform: translateY(6px); opacity: 0.4; }
+@keyframes spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
 }
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+@keyframes bounce-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
 }
 
-.animate-float         { animation: float 6s ease-in-out infinite; }
-.animate-glow-pulse    { animation: glow-pulse 2.5s ease-in-out infinite; }
-.animate-spin-slow     { animation: spin-slow 12s linear infinite; }
-.animate-scroll-bounce { animation: scroll-bounce 2s ease-in-out infinite; }
-.animate-fade-in       { animation: fade-in 0.5s ease both; }
-
-/* ─────────────────────────────────────────────
-   RESPONSIVE OVERRIDES
-   ───────────────────────────────────────────── */
-
-/* Section container — mobile padding */
-.section-container {
-  padding: 4rem 1.25rem;
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
-@media (min-width: 640px) {
-  .section-container {
-    padding: 5rem 2rem;
-  }
+@keyframes glitch-1 {
+  0%, 100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  20% { clip-path: inset(10% 0 85% 0); transform: translateX(-4px); }
+  40% { clip-path: inset(40% 0 50% 0); transform: translateX(4px); }
+  60% { clip-path: inset(70% 0 20% 0); transform: translateX(-2px); }
+  80% { clip-path: inset(85% 0 5% 0); transform: translateX(2px); }
 }
 
-@media (min-width: 768px) {
-  .section-container {
-    padding: 7rem 3rem;
-  }
+@keyframes glitch-2 {
+  0%, 100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  20% { clip-path: inset(5% 0 90% 0); transform: translateX(4px); color: var(--color-orange); }
+  40% { clip-path: inset(50% 0 40% 0); transform: translateX(-4px); }
+  60% { clip-path: inset(75% 0 15% 0); transform: translateX(2px); color: var(--color-cyan); }
+  80% { clip-path: inset(90% 0 2% 0); transform: translateX(-2px); }
 }
 
-/* Section number — hide on mobile, reveal at md */
-.section-number {
-  display: none;
+@keyframes scan-move {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
 }
 
-@media (min-width: 768px) {
-  .section-number {
-    display: block;
-    font-size: clamp(5rem, 12vw, 9rem);
-  }
+@keyframes beam-orbit {
+  0% { offset-distance: 0%; }
+  100% { offset-distance: 100%; }
 }
 
-@media (min-width: 1024px) {
-  .section-number {
-    font-size: clamp(6rem, 15vw, 12rem);
-  }
+@keyframes float-up {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
 }
 
-/* Buttons — smaller on mobile */
-.btn-primary,
-.btn-outline {
-  padding: 0.65rem 1.25rem;
-  font-size: 0.85rem;
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
-@media (min-width: 768px) {
-  .btn-primary,
-  .btn-outline {
-    padding: 0.75rem 1.75rem;
-    font-size: 0.9rem;
-  }
-}
-
-/* Glass card — no hover lift on touch devices */
-@media (hover: hover) {
-  .glass-card:hover {
-    border-color: var(--color-border-hover);
-    box-shadow:
-      0 0 24px rgba(0, 194, 255, 0.08),
-      0 8px 32px rgba(0, 0, 0, 0.3);
-    transform: translateY(-2px);
-  }
-
-  html.light .glass-card:hover {
-    box-shadow:
-      0 0 24px rgba(0, 119, 182, 0.1),
-      0 8px 32px rgba(0, 0, 0, 0.08);
-  }
-}
-
-/* Revert hover styles from the original declaration so they only fire on hover:hover */
-.glass-card:hover {
-  border-color: var(--color-border);
-  box-shadow: none;
-  transform: none;
-}
-
-/* Mobile visibility helpers */
-.hidden-mobile { display: none !important; }
-.show-mobile   { display: flex; }
-
-@media (min-width: 768px) {
-  .hidden-mobile { display: flex !important; }
-  .show-mobile   { display: none !important; }
-}
-
-/* Focus-visible outlines for keyboard nav */
-:focus-visible {
-  outline: 2px solid var(--color-cyan);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-
-/* About — mobile: center everything */
-.about-grid,
-.about-bio,
-.about-block-label,
-.about-lang-list,
-.soft-chips-container,
-.about-interests {
-  text-align: center;
-}
-
-.about-block-label {
-  justify-content: center;
-}
-
-.about-interests {
-  justify-content: center;
-}
-
-/* Section title — center on mobile */
-.section-label {
-  justify-content: center;
-}
-
-.section-heading {
-  text-align: center;
-}
-
-/* Skill display toggles — orbital rings desktop only, chips mobile/tablet */
-.skills-desktop-only { display: none; }
-.skills-mobile-only  { display: flex; }
-
-@media (min-width: 1024px) {
-  .skills-desktop-only { display: block; }
-  .skills-mobile-only  { display: none; }
-}
-
-/* Language cards — tablet+: all 3 cards visible side by side, carousel disabled */
-@media (min-width: 768px) {
-  /* Unlock the viewport so all slides show at once */
-  .lang-embla__viewport {
-    overflow: visible;
-  }
-
-  /* Each slide takes an equal share of the row */
-  .lang-embla__slide {
-    flex: 1;
-    padding-right: 0;
-  }
-
-  /* Gap between cards */
-  .lang-embla__container {
-    gap: 0.85rem;
-  }
-
-  /* Tilt fills full height */
-  .about-lang-tilt {
-    flex: 1;
-  }
-
-  /* Card fills the tilt wrapper */
-  .lang-card {
-    flex: 1;
-  }
-
-  /* Hide carousel controls */
-  .lang-controls {
-    display: none;
-  }
-
-  /* Level row: inline on desktop */
-  .lang-level-row {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.45rem;
-  }
-
-  .lang-level-row .lang-signal {
-    transform: scale(0.72);
-    transform-origin: left center;
-    flex-shrink: 0;
-  }
-}
-
-/* About — two-column from md (768px) */
-@media (min-width: 768px) {
-  .about-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 3.5rem;
-    align-items: start;
-  }
-
-  /* Reset centering on tablet+ */
-  .about-grid,
-  .about-bio,
-  .about-block-label,
-  .about-lang-list,
-  .soft-chips-container,
-  .about-interests {
-    text-align: left;
-  }
-
-  .about-block-label {
-    justify-content: flex-start;
-  }
-
-  .about-interests,
-  .soft-chips-container {
-    justify-content: flex-start;
-  }
-
-  .section-label {
-    justify-content: flex-start;
-  }
-
-  .section-heading {
-    text-align: left;
-  }
-}
-
-@media (min-width: 1024px) {
-  .about-grid {
-    gap: 5rem;
-  }
-}
-
-/* Hero — responsive grid layout */
-@media (min-width: 640px) {
-  .hero-photo {
-    display: flex;
-  }
-
-  .hero-grid {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-  }
-
-  .hero-grid > *:first-child {
-    flex: 1;
-  }
-}
-
-@media (min-width: 768px) {
-  .hero-grid {
-    padding: 0 3rem;
-  }
-
-  .photo-ring-wrapper {
-    width: 200px;
-    height: 200px;
-  }
-
-  .photo-ring-img {
-    width: 188px;
-    height: 188px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .hero-grid {
-    padding: 0 1.5rem;
-    gap: 4rem;
-  }
-
-  .photo-ring-wrapper {
-    width: 228px;
-    height: 228px;
-  }
-
-  .photo-ring-img {
-    width: 216px;
-    height: 216px;
-  }
-}
-
-/* Reduced motion — kill decorative animations */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .animate-float,
-  .animate-spin-slow,
-  .animate-scroll-bounce {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
+}
 
-  .animate-glow-pulse {
-    animation: none;
-    box-shadow: 0 0 0 3px rgba(0, 214, 143, 0.3);
-  }
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-cyan) 0%, #6B8FFF 50%, var(--color-orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-  html {
-    scroll-behavior: auto;
-  }
+/* Platform badge colors */
+.badge-udemy {
+  background: rgba(160, 80, 240, 0.15);
+  color: #A050F0;
+  border: 1px solid rgba(160, 80, 240, 0.3);
+}
+.badge-dometrain {
+  background: rgba(255, 107, 53, 0.15);
+  color: var(--color-orange);
+  border: 1px solid rgba(255, 107, 53, 0.3);
+}
+.badge-mosh {
+  background: rgba(0, 194, 255, 0.15);
+  color: var(--color-cyan);
+  border: 1px solid rgba(0, 194, 255, 0.3);
+}
+.badge-rumos {
+  background: rgba(0, 214, 143, 0.15);
+  color: var(--color-emerald);
+  border: 1px solid rgba(0, 214, 143, 0.3);
 }

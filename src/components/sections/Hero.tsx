@@ -1,185 +1,623 @@
-import { motion } from 'framer-motion'
-import { ArrowDown, Github, Linkedin, MapPin } from 'lucide-react'
-import { ParticleCanvas } from '../ui/ParticleCanvas'
-import { profile } from '../../data/profile'
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { GitFork, Link, ChevronDown, MapPin, Wifi } from "lucide-react";
+import ParticleCanvas from "../ui/ParticleCanvas";
+import { profile } from "../../data/profile";
 
-const container = {
-  hidden:  { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.3 },
-  },
+const ROLES = [
+  "Software Developer",
+  "Backend Engineer",
+  ".NET Specialist",
+  "Cloud Enthusiast",
+  "API Designer",
+];
+
+function TypewriterText({ words }: { words: string[] }) {
+  const [display, setDisplay] = useState("");
+  const [wordIdx, setWordIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = words[wordIdx];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (!deleting && charIdx < current.length) {
+      timeout = setTimeout(() => {
+        setDisplay(current.slice(0, charIdx + 1));
+        setCharIdx((c) => c + 1);
+      }, 80);
+    } else if (!deleting && charIdx === current.length) {
+      timeout = setTimeout(() => setDeleting(true), 2200);
+    } else if (deleting && charIdx > 0) {
+      timeout = setTimeout(() => {
+        setDisplay(current.slice(0, charIdx - 1));
+        setCharIdx((c) => c - 1);
+      }, 40);
+    } else if (deleting && charIdx === 0) {
+      setDeleting(false);
+      setWordIdx((w) => (w + 1) % words.length);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [charIdx, deleting, wordIdx, words]);
+
+  return (
+    <span>
+      {display}
+      <span
+        style={{
+          display: "inline-block",
+          width: "2px",
+          height: "1em",
+          background: "var(--color-cyan)",
+          marginLeft: "2px",
+          verticalAlign: "text-bottom",
+          animation: "blink-cursor 1s ease infinite",
+        }}
+      />
+    </span>
+  );
 }
 
-const item = {
-  hidden:  { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] as number[] } },
-}
-
-export function Hero() {
-  const scrollTo = (id: string) => {
-    document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
+export default function Hero() {
+  const [imgError, setImgError] = useState(false);
 
   return (
     <section
       id="hero"
       style={{
-        position: 'relative',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        paddingTop: 64,
+        minHeight: "100dvh",
+        position: "relative",
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
       }}
     >
+      {/* Particle canvas */}
       <ParticleCanvas />
 
-      {/* Ambient glow behind the text */}
+      {/* Radial gradient accent */}
       <div
-        aria-hidden="true"
+        aria-hidden
         style={{
-          position: 'absolute',
-          top: '20%',
-          left: '0%',
-          width: '55vw',
-          height: '55vw',
-          maxWidth: 640,
-          maxHeight: 640,
-          background: 'radial-gradient(circle, rgba(0,194,255,0.055) 0%, transparent 68%)',
-          pointerEvents: 'none',
+          position: "absolute",
+          top: 0,
+          right: 0,
+          width: "50%",
+          height: "100%",
+          background:
+            "radial-gradient(ellipse at 80% 20%, rgba(0,194,255,0.06) 0%, transparent 60%)",
+          pointerEvents: "none",
         }}
       />
 
-      {/* Main content grid */}
-      <div className="hero-grid" style={{ position: 'relative', zIndex: 1 }}>
+      {/* HUD corner decorations */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: "80px",
+          left: "24px",
+          borderLeft: "1px solid rgba(0,194,255,0.2)",
+          borderTop: "1px solid rgba(0,194,255,0.2)",
+          width: "48px",
+          height: "48px",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: "80px",
+          right: "24px",
+          borderRight: "1px solid rgba(0,194,255,0.2)",
+          borderTop: "1px solid rgba(0,194,255,0.2)",
+          width: "48px",
+          height: "48px",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: "40px",
+          left: "24px",
+          borderLeft: "1px solid rgba(0,194,255,0.2)",
+          borderBottom: "1px solid rgba(0,194,255,0.2)",
+          width: "48px",
+          height: "48px",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: "40px",
+          right: "24px",
+          borderRight: "1px solid rgba(0,194,255,0.2)",
+          borderBottom: "1px solid rgba(0,194,255,0.2)",
+          width: "48px",
+          height: "48px",
+          pointerEvents: "none",
+        }}
+      />
 
-        {/* ── Left: text ── */}
-        <motion.div variants={container} initial="hidden" animate="visible">
+      {/* Scan line readout */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: "80px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          fontFamily: "var(--font-mono)",
+          fontSize: "0.6rem",
+          color: "rgba(0,194,255,0.3)",
+          letterSpacing: "0.25em",
+          whiteSpace: "nowrap",
+        }}
+      >
+        SYSTEM.ONLINE // INITIALIZING PORTFOLIO v2.0 // STARK.INDUSTRIES
+      </div>
 
+      {/* HUD coordinates */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: "80px",
+          left: "32px",
+          fontFamily: "var(--font-mono)",
+          fontSize: "0.55rem",
+          color: "rgba(0,194,255,0.25)",
+          letterSpacing: "0.1em",
+          lineHeight: 1.8,
+        }}
+      >
+        <div>LAT: 41.1579° N</div>
+        <div>LON: 8.6291° W</div>
+        <div>ALT: 104m</div>
+      </div>
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: "80px",
+          right: "32px",
+          fontFamily: "var(--font-mono)",
+          fontSize: "0.55rem",
+          color: "rgba(0,194,255,0.25)",
+          letterSpacing: "0.1em",
+          lineHeight: 1.8,
+          textAlign: "right",
+        }}
+      >
+        <div>SYS: ACTIVE</div>
+        <div>NET: CONNECTED</div>
+        <div>SEC: NOMINAL</div>
+      </div>
+
+      {/* Main content */}
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "80px 1.5rem 0",
+          width: "100%",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gap: "4rem",
+          alignItems: "center",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        {/* Text column */}
+        <div>
           {/* Status badge */}
-          <motion.div variants={item}>
-            <span className="available-badge">
-              <span className="available-dot" aria-hidden="true" />
-              Available for opportunities
-            </span>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              marginBottom: "1.5rem",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "6px 14px",
+                border: "1px solid rgba(0, 214, 143, 0.3)",
+                background: "rgba(0, 214, 143, 0.08)",
+                borderRadius: "2px",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.65rem",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "var(--color-emerald)",
+              }}
+            >
+              <span
+                style={{
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: "var(--color-emerald)",
+                  animation: "status-pulse 2s ease infinite",
+                  flexShrink: 0,
+                }}
+              />
+              <Wifi size={10} />
+              Available for Opportunities
+            </div>
           </motion.div>
 
           {/* Name */}
-          <motion.h1 variants={item} className="hero-name">
-            <span className="gradient-text">{profile.firstName}</span>
-            <br />
-            <span style={{ color: 'var(--color-text)' }}>{profile.lastName}</span>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.1 }}
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 800,
+              fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+              lineHeight: 1,
+              marginBottom: "0.5rem",
+            }}
+          >
+            <span className="gradient-text">{profile.name}</span>
           </motion.h1>
 
-          {/* Role + location row */}
-          <motion.div variants={item} className="hero-meta">
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: 'var(--color-cyan)', letterSpacing: '0.05em' }}>
-              {profile.role}
-            </span>
-            <span style={{ color: 'var(--color-faint)' }}>·</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--color-muted)', fontSize: '0.9rem' }}>
-              <MapPin size={13} />
-              {profile.location}
-            </span>
+          {/* Typewriter role */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.2 }}
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 600,
+              fontSize: "clamp(1.1rem, 2.5vw, 1.6rem)",
+              color: "var(--color-muted)",
+              marginBottom: "1.5rem",
+              minHeight: "2rem",
+            }}
+          >
+            <TypewriterText words={ROLES} />
           </motion.div>
 
-          {/* Tagline */}
-          <motion.p variants={item} className="hero-tagline">
-            {profile.tagline}
+          {/* Location */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35 }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.75rem",
+              color: "var(--color-muted)",
+              letterSpacing: "0.08em",
+              marginBottom: "1.5rem",
+            }}
+          >
+            <MapPin size={12} style={{ color: "var(--color-cyan)" }} />
+            {profile.location}
+          </motion.div>
+
+          {/* Bio */}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            style={{
+              color: "var(--color-muted)",
+              fontSize: "1rem",
+              lineHeight: 1.75,
+              maxWidth: "480px",
+              marginBottom: "2.5rem",
+            }}
+          >
+            {profile.bio}
           </motion.p>
 
           {/* CTA buttons */}
-          <motion.div variants={item} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-            <button
-              className="btn-primary"
-              onClick={() => scrollTo('#experience')}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "1rem",
+              marginBottom: "2rem",
+            }}
+          >
+            <a
+              href="#experience"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "12px 24px",
+                background: "var(--color-cyan)",
+                color: "#07090F",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.75rem",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                fontWeight: 600,
+                transition: "all 0.2s ease",
+                clipPath:
+                  "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))",
+              }}
+              className="hover:opacity-90"
             >
-              View My Work
-              <ArrowDown size={14} />
-            </button>
-            <a href={profile.github}  target="_blank" rel="noopener noreferrer" className="btn-outline">
-              <Github   size={14} /> GitHub
+              VIEW MY WORK
             </a>
-            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="btn-outline">
-              <Linkedin size={14} /> LinkedIn
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "12px 24px",
+                border: "1px solid var(--color-cyan)",
+                color: "var(--color-cyan)",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.75rem",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                transition: "all 0.2s ease",
+                background: "transparent",
+                clipPath:
+                  "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))",
+              }}
+            >
+              GET IN TOUCH
             </a>
           </motion.div>
-        </motion.div>
 
-        {/* ── Right: photo ring ── */}
+          {/* Social links */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.55 }}
+            style={{ display: "flex", gap: "12px" }}
+          >
+            <a
+              href={profile.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "36px",
+                height: "36px",
+                border: "1px solid var(--color-border)",
+                color: "var(--color-muted)",
+                transition: "all 0.2s ease",
+                textDecoration: "none",
+                borderRadius: "2px",
+              }}
+              className="hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+            >
+              <GitFork size={16} />
+            </a>
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "36px",
+                height: "36px",
+                border: "1px solid var(--color-border)",
+                color: "var(--color-muted)",
+                transition: "all 0.2s ease",
+                textDecoration: "none",
+                borderRadius: "2px",
+              }}
+              className="hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+            >
+              <Link size={16} />
+            </a>
+          </motion.div>
+        </div>
+
+        {/* Photo column */}
         <motion.div
-          className="hero-photo"
-          initial={{ opacity: 0, scale: 0.88 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: 0.45 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          <PhotoRing />
+          <div style={{ position: "relative", display: "inline-block" }}>
+            {/* Outer spinning ring */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: "-20px",
+                borderRadius: "50%",
+                background:
+                  "conic-gradient(from 0deg, transparent 0%, var(--color-cyan) 20%, transparent 40%, var(--color-orange) 60%, transparent 80%, var(--color-cyan) 100%)",
+                animation: "spin-slow 12s linear infinite",
+                opacity: 0.6,
+              }}
+            />
+            {/* Inner spinning ring (counter) */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: "-10px",
+                borderRadius: "50%",
+                background:
+                  "conic-gradient(from 180deg, transparent 0%, var(--color-orange) 15%, transparent 35%, var(--color-cyan) 55%, transparent 75%, var(--color-orange) 95%)",
+                animation: "spin-reverse 8s linear infinite",
+                opacity: 0.4,
+              }}
+            />
+            {/* Glow ring */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: "-4px",
+                borderRadius: "50%",
+                animation: "arc-pulse 3s ease infinite",
+              }}
+            />
+            {/* Photo container */}
+            <div
+              style={{
+                width: "clamp(220px, 28vw, 320px)",
+                height: "clamp(220px, 28vw, 320px)",
+                borderRadius: "50%",
+                overflow: "hidden",
+                border: "2px solid rgba(0,194,255,0.3)",
+                position: "relative",
+                background: "var(--color-elevated)",
+              }}
+            >
+              {!imgError ? (
+                <img
+                  src={profile.photo}
+                  alt={profile.name}
+                  onError={() => setImgError(true)}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    gap: "8px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 800,
+                      fontSize: "clamp(3rem, 8vw, 5rem)",
+                      background:
+                        "linear-gradient(135deg, var(--color-cyan), var(--color-orange))",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    NA
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.6rem",
+                      color: "var(--color-faint)",
+                      letterSpacing: "0.2em",
+                    }}
+                  >
+                    PROFILE.IMG
+                  </span>
+                </div>
+              )}
+              {/* Scan overlay */}
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,194,255,0.03) 3px, rgba(0,194,255,0.03) 4px)",
+                  pointerEvents: "none",
+                  borderRadius: "50%",
+                }}
+              />
+            </div>
+
+            {/* HUD data overlay */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                bottom: "-8px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.55rem",
+                color: "rgba(0,194,255,0.5)",
+                letterSpacing: "0.2em",
+                whiteSpace: "nowrap",
+                background: "var(--color-bg)",
+                padding: "2px 8px",
+                border: "1px solid var(--color-border)",
+              }}
+            >
+              ID: NA-001 // VERIFIED
+            </div>
+          </div>
         </motion.div>
       </div>
 
       {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8, duration: 0.6 }}
+      <div
         style={{
-          position: 'absolute',
-          bottom: '2rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.35rem',
+          position: "absolute",
+          bottom: "32px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "4px",
+          zIndex: 1,
         }}
       >
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-faint)' }}>
-          scroll
+        <span
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.55rem",
+            color: "var(--color-faint)",
+            letterSpacing: "0.2em",
+          }}
+        >
+          SCROLL
         </span>
-        <ArrowDown size={13} className="animate-scroll-bounce" style={{ color: 'var(--color-faint)' }} />
-      </motion.div>
+        <ChevronDown
+          size={16}
+          style={{
+            color: "var(--color-cyan)",
+            animation: "bounce-y 2s ease infinite",
+          }}
+        />
+      </div>
     </section>
-  )
-}
-
-// ── Spinning conic-gradient photo ring ────────────────────────────────────
-function PhotoRing() {
-  return (
-    <div style={{ position: 'relative' }} className="photo-ring-wrapper">
-      {/* Spinning colour ring */}
-      <div
-        className="animate-spin-slow"
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: -4,
-          borderRadius: '50%',
-          background: 'conic-gradient(from 0deg, var(--color-cyan), var(--color-orange), var(--color-emerald), var(--color-cyan))',
-        }}
-      />
-      {/* Gap mask — uses the bg colour to create a ring effect */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 2,
-          borderRadius: '50%',
-          background: 'var(--color-bg)',
-        }}
-      />
-      {/* Photo */}
-      <img
-        src={profile.photo}
-        alt={profile.name}
-        style={{
-          position: 'relative',
-          borderRadius: '50%',
-          objectFit: 'cover',
-          display: 'block',
-        }}
-        className="photo-ring-img"
-      />
-    </div>
-  )
+  );
 }

@@ -1,279 +1,254 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Moon, Sun, Menu, X } from "lucide-react";
-import type { Theme } from "../../App";
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sun, Moon, Menu, X } from 'lucide-react';
+
+const navLinks = [
+  { label: 'About', href: '#about' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Education', href: '#education' },
+  { label: 'Certifications', href: '#certifications' },
+  { label: 'Projects', href: '#projects' },
+];
 
 interface NavbarProps {
-  theme: Theme;
+  theme: 'dark' | 'light';
   onToggleTheme: () => void;
 }
 
-const NAV_LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "Certifications", href: "#certifications" },
-  { label: "Projects", href: "#projects" },
-];
-
-function scrollTo(href: string) {
-  document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
-}
-
-export function Navbar({ theme, onToggleTheme }: NavbarProps) {
+export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Shadow enhancement once user scrolls
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handler);
+    return () => window.removeEventListener('scroll', handler);
   }, []);
 
-  // Close mobile menu on resize to desktop
-  useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth >= 768) setMenuOpen(false);
-    };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  const handleNavClick = (href: string) => {
-    setMenuOpen(false);
-    scrollTo(href);
+  const handleNavClick = () => {
+    setMobileOpen(false);
   };
 
   return (
     <header
-      className="navbar"
-      style={{ boxShadow: scrolled ? "0 2px 24px rgba(0,0,0,0.4)" : "none" }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
+        height: '64px',
+        background: scrolled
+          ? 'rgba(7, 9, 15, 0.95)'
+          : 'rgba(7, 9, 15, 0.8)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid var(--color-border)',
+        transition: 'background 0.3s ease',
+      }}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
-          maxWidth: 1200,
-          margin: "0 auto",
-        }}
+      <nav
+        className="flex items-center justify-between h-full"
+        style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem' }}
       >
-        {/* ── Logo ── */}
-        <LogoMark />
-
-        {/* ── Desktop nav links ── */}
-        <nav
-          aria-label="Main navigation"
-          style={{ alignItems: "center", gap: "2rem" }}
-          className="hidden-mobile"
+        {/* Logo */}
+        <a
+          href="#"
+          aria-label="Nuno Araújo — Home"
+          style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
         >
-          {NAV_LINKS.map((link) => (
-            <NavLink
-              key={link.href}
-              label={link.label}
-              href={link.href}
-              onClick={handleNavClick}
-            />
-          ))}
-        </nav>
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              border: '1.5px solid var(--color-cyan)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              transition: 'box-shadow 0.3s ease',
+            }}
+            className="hover:shadow-[0_0_16px_rgba(0,194,255,0.5)]"
+          >
+            <span
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 800,
+                fontSize: '0.85rem',
+                color: 'var(--color-cyan)',
+                letterSpacing: '0.05em',
+              }}
+            >
+              NA
+            </span>
+            {/* Corner dots */}
+            <span style={{ position: 'absolute', top: '-2px', left: '-2px', width: '4px', height: '4px', background: 'var(--color-orange)', borderRadius: '50%' }} />
+            <span style={{ position: 'absolute', bottom: '-2px', right: '-2px', width: '4px', height: '4px', background: 'var(--color-orange)', borderRadius: '50%' }} />
+          </div>
+          <span
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 700,
+              fontSize: '1rem',
+              color: 'var(--color-text)',
+            }}
+          >
+            Nuno Araújo
+          </span>
+        </a>
 
-        {/* ── Right actions ── */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-6">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.72rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                color: 'var(--color-muted)',
+                textDecoration: 'none',
+                position: 'relative',
+                padding: '2px 0',
+                transition: 'color 0.2s ease',
+              }}
+              className="group hover:text-[var(--color-text)]"
+            >
+              {link.label}
+              {/* Cyan underline slide-in */}
+              <span
+                style={{
+                  position: 'absolute',
+                  bottom: '-2px',
+                  left: 0,
+                  right: '100%',
+                  height: '1px',
+                  background: 'var(--color-cyan)',
+                  transition: 'right 0.25s ease',
+                }}
+                className="group-hover:right-0"
+              />
+            </a>
+          ))}
+
           {/* Theme toggle */}
           <button
             onClick={onToggleTheme}
-            aria-label={
-              theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
-            }
-            className="icon-btn"
+            aria-label="Toggle theme"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px',
+              border: '1px solid var(--color-border)',
+              background: 'transparent',
+              cursor: 'pointer',
+              color: 'var(--color-muted)',
+              transition: 'color 0.2s ease, border-color 0.2s ease',
+              borderRadius: '2px',
+            }}
+            className="hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
           >
-            {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
-          </button>
-
-          {/* Hamburger — mobile only */}
-          <button
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            className="icon-btn show-mobile"
-          >
-            {menuOpen ? <X size={15} /> : <Menu size={15} />}
+            {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
           </button>
         </div>
-      </div>
 
-      {/* ── Mobile slide-down menu ── */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.nav
-            key="mobile-menu"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            aria-label="Mobile navigation"
+        {/* Mobile: theme + hamburger */}
+        <div className="flex md:hidden items-center gap-3">
+          <button
+            onClick={onToggleTheme}
+            aria-label="Toggle theme"
             style={{
-              position: "absolute",
-              top: 64,
-              left: 0,
-              right: 0,
-              background: "var(--color-surface)",
-              borderBottom: "1px solid var(--color-border)",
-              padding: "1rem 1.5rem 1.25rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.25rem",
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px',
+              border: '1px solid var(--color-border)',
+              background: 'transparent',
+              cursor: 'pointer',
+              color: 'var(--color-muted)',
+              borderRadius: '2px',
             }}
           >
-            {NAV_LINKS.map((link) => (
-              <button
+            {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+          </button>
+          <button
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label="Toggle menu"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px',
+              border: '1px solid var(--color-border)',
+              background: 'transparent',
+              cursor: 'pointer',
+              color: 'var(--color-text)',
+              borderRadius: '2px',
+            }}
+          >
+            {mobileOpen ? <X size={16} /> : <Menu size={16} />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile slide-down menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              position: 'absolute',
+              top: '64px',
+              left: 0,
+              right: 0,
+              background: 'rgba(7, 9, 15, 0.98)',
+              backdropFilter: 'blur(16px)',
+              borderBottom: '1px solid var(--color-border)',
+              padding: '1.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.25rem',
+            }}
+          >
+            {navLinks.map((link, i) => (
+              <motion.a
                 key={link.href}
-                onClick={() => handleNavClick(link.href)}
+                href={link.href}
+                onClick={handleNavClick}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
                 style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.78rem",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  color: "var(--color-muted)",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  textAlign: "left",
-                  padding: "0.6rem 0",
-                  borderBottom: "1px solid var(--color-border)",
-                  transition: "color 0.2s",
-                  width: "100%",
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.8rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.15em',
+                  color: 'var(--color-muted)',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = "var(--color-cyan)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = "var(--color-muted)")
-                }
               >
+                <span style={{ color: 'var(--color-cyan)', opacity: 0.5 }}>
+                  {String(i + 1).padStart(2, '0')}.
+                </span>
                 {link.label}
-              </button>
+              </motion.a>
             ))}
-          </motion.nav>
+          </motion.div>
         )}
       </AnimatePresence>
     </header>
-  );
-}
-
-// ── Geometric N+A lettermark logo ──────────────────────────────────────
-function LogoMark() {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <motion.button
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      aria-label="Back to top"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      animate={{
-        borderColor: hovered ? "var(--color-cyan)" : "rgba(0,194,255,0.25)",
-        boxShadow: hovered
-          ? "0 0 16px rgba(0,194,255,0.3), inset 0 0 12px rgba(0,194,255,0.04)"
-          : "0 0 0px rgba(0,194,255,0)",
-      }}
-      transition={{ duration: 0.2 }}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 46,
-        height: 34,
-        border: "1px solid rgba(0,194,255,0.25)",
-        borderRadius: 4,
-        background: "transparent",
-        cursor: "pointer",
-        flexShrink: 0,
-        padding: 0,
-        /* Chamfered top-right corner — the "blueprint" detail */
-        clipPath:
-          "polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%)",
-      }}
-    >
-      {/*
-        Geometric lettermark: N and A built from technical strokes.
-        ViewBox 30×19 — N occupies x:1–11, A occupies x:14–28.
-        StrokeLinecap "square" gives that precise drafting-pen feel.
-      */}
-      <motion.svg
-        viewBox="0 0 30 19"
-        width={30}
-        height={19}
-        stroke="var(--color-cyan)"
-        strokeWidth={1.75}
-        strokeLinecap="square"
-        strokeLinejoin="miter"
-        fill="none"
-        aria-hidden="true"
-        animate={{ opacity: hovered ? 1 : 0.75 }}
-        transition={{ duration: 0.2 }}
-      >
-        {/* N — left vertical → diagonal → right vertical */}
-        <polyline points="1,17 1,1 11,17 11,1" />
-
-        {/* A — two diagonals meeting at apex */}
-        <polyline points="14,17 21,1 28,17" />
-        {/* A crossbar, positioned at ~60% height */}
-        <line x1="18.3" y1="11" x2="23.7" y2="11" />
-      </motion.svg>
-    </motion.button>
-  );
-}
-
-// ── Extracted desktop nav link with animated underline ──
-function NavLink({
-  label,
-  href,
-  onClick,
-}: {
-  label: string;
-  href: string;
-  onClick: (href: string) => void;
-}) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <button
-      onClick={() => onClick(href)}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        fontFamily: "var(--font-mono)",
-        fontSize: "0.72rem",
-        letterSpacing: "0.1em",
-        textTransform: "uppercase",
-        color: hovered ? "var(--color-text)" : "var(--color-muted)",
-        background: "none",
-        border: "none",
-        cursor: "pointer",
-        padding: "0.25rem 0",
-        position: "relative",
-        transition: "color 0.2s",
-      }}
-    >
-      {label}
-      {/* Animated underline */}
-      <motion.span
-        animate={{ scaleX: hovered ? 1 : 0, opacity: hovered ? 1 : 0 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          background: "var(--color-cyan)",
-          transformOrigin: "left",
-          display: "block",
-        }}
-      />
-    </button>
   );
 }

@@ -1,59 +1,55 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
+import Hero from './components/sections/Hero';
+import About from './components/sections/About';
+import Skills from './components/sections/Skills';
+import Experience from './components/sections/Experience';
+import Education from './components/sections/Education';
+import Certifications from './components/sections/Certifications';
+import Projects from './components/sections/Projects';
+import Extracurricular from './components/sections/Extracurricular';
 
-// ── Layout (added in steps 5 & 14) ──────────────────────────────────────
-import { Navbar } from './components/layout/Navbar'
-// import { Footer } from './components/layout/Footer'
+type Theme = 'dark' | 'light';
 
-// ── Sections (added one per step, 6 → 13) ───────────────────────────────
-import { Hero }            from './components/sections/Hero'
-import { About }           from './components/sections/About'
-// import { Skills }          from './components/sections/Skills'
-// import { Experience }      from './components/sections/Experience'
-// import { Education }       from './components/sections/Education'
-// import { Certifications }  from './components/sections/Certifications'
-// import { Projects }        from './components/sections/Projects'
-// import { Extracurricular } from './components/sections/Extracurricular'
-
-export type Theme = 'dark' | 'light'
-
-/** Read saved preference from localStorage, fall back to OS preference. */
 function getInitialTheme(): Theme {
-  const stored = localStorage.getItem('theme')
-  if (stored === 'dark' || stored === 'light') return stored
-  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+  if (typeof window === 'undefined') return 'dark';
+  const stored = localStorage.getItem('theme');
+  if (stored === 'light' || stored === 'dark') return stored;
+  return 'dark';
 }
 
 export default function App() {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme)
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
   useEffect(() => {
-    const root = document.documentElement
+    const html = document.documentElement;
     if (theme === 'light') {
-      root.classList.add('light')
+      html.classList.add('light');
     } else {
-      root.classList.remove('light')
+      html.classList.remove('light');
     }
-    localStorage.setItem('theme', theme)
-  }, [theme])
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
-  const toggleTheme = () => setTheme(t => (t === 'dark' ? 'light' : 'dark'))
+  const toggleTheme = () => {
+    setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
+  };
 
   return (
-    <>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg)' }}>
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
-
       <main>
         <Hero />
         <About />
-        {/* Step 8  → <Skills /> */}
-        {/* Step 9  → <Experience /> */}
-        {/* Step 10 → <Education /> */}
-        {/* Step 11 → <Certifications /> */}
-        {/* Step 12 → <Projects /> */}
-        {/* Step 13 → <Extracurricular /> */}
+        <Skills />
+        <Experience />
+        <Education />
+        <Certifications />
+        <Projects />
+        <Extracurricular />
       </main>
-
-      {/* Step 14 → <Footer /> */}
-    </>
-  )
+      <Footer />
+    </div>
+  );
 }
