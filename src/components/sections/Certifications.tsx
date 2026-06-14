@@ -97,8 +97,11 @@ export default function Certifications() {
           {visible.map((cert, i) => (
             <motion.div
               key={cert.id}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-20px' }}
               variants={fadeInUp}
-              transition={{ duration: 0.5, delay: i * 0.04 }}
+              transition={{ duration: 0.45, delay: (i % 8) * 0.04 }}
               className="jarvis-card"
               style={{
                 padding: '1.25rem',
