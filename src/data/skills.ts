@@ -1,47 +1,52 @@
-export type SkillColor = 'cyan' | 'orange' | 'emerald'
-
 export interface SkillGroup {
-  id: string
-  category: string
-  color: SkillColor
-  skills: string[]
+  id: string;
+  category: string;
+  color: 'cyan' | 'orange' | 'emerald';
+  skills: string[];
+  statusLabel: string;
 }
 
 export const skillGroups: SkillGroup[] = [
   {
+    id: 'architecture',
+    category: 'Architecture & Patterns',
+    color: 'orange',
+    skills: ['RESTful API', 'Domain Driven Design', '.NET MVC', 'Dependency Injection', 'OOP'],
+    statusLabel: 'DESIGN.PATTERNS // OPERATIONAL',
+  },
+  {
     id: 'backend',
     category: 'Backend',
     color: 'cyan',
-    skills: ['C#', '.NET Core', 'ASP.NET Core', 'Entity Framework Core', 'Node.js', 'REST API', 'xUnit'],
+    skills: ['C# / .NET Core', 'Entity Framework Core', 'ASP.NET Core', 'Node.js', 'xUnit'],
+    statusLabel: 'BACKEND.STACK // ONLINE',
   },
   {
     id: 'frontend',
     category: 'Frontend',
     color: 'orange',
-    skills: ['TypeScript', 'JavaScript', 'React', 'HTML5', 'CSS3'],
+    skills: ['JavaScript / TypeScript', 'HTML5 / CSS3', 'React'],
+    statusLabel: 'FRONTEND.LAYER // ACTIVE',
   },
   {
     id: 'databases',
     category: 'Databases',
     color: 'cyan',
-    skills: ['PostgreSQL', 'SQL Server'],
+    skills: ['SQL Server', 'PostgreSQL'],
+    statusLabel: 'DATA.LAYER // SYNCED',
   },
   {
     id: 'cloud',
     category: 'Cloud & DevOps',
     color: 'emerald',
-    skills: ['AWS Lambda', 'AWS S3', 'AWS RDS', 'AWS ECS', 'AWS EC2', 'Secrets Manager', 'Docker'],
+    skills: ['AWS Lambda', 'AWS S3', 'AWS RDS', 'AWS ECS', 'AWS EC2', 'Secrets Manager', 'Docker', 'Git'],
+    statusLabel: 'CLOUD.INFRA // DEPLOYED',
   },
   {
-    id: 'architecture',
-    category: 'Architecture',
-    color: 'orange',
-    skills: ['Domain Driven Design', 'RESTful API', '.NET MVC', 'Dependency Injection', 'OOP'],
-  },
-  {
-    id: 'tools',
-    category: 'Tools & Methods',
+    id: 'methodologies',
+    category: 'Methodologies',
     color: 'emerald',
-    skills: ['Git', 'GitHub', 'Agile / Scrum', 'Docker'],
+    skills: ['Agile / Scrum'],
+    statusLabel: 'WORKFLOW // OPTIMIZED',
   },
-]
+];

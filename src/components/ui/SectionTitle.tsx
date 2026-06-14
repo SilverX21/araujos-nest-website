@@ -1,41 +1,58 @@
-import { motion } from 'framer-motion'
-
 interface SectionTitleProps {
-  number: string
-  label: string
-  heading: string
+  protocol: string;
+  title: string;
+  subtitle?: string;
 }
 
-const fadeUp = {
-  hidden:  { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as number[] } },
-}
-
-export function SectionTitle({ number, label, heading }: SectionTitleProps) {
+export default function SectionTitle({ protocol, title, subtitle }: SectionTitleProps) {
   return (
-    <div style={{ position: 'relative', marginBottom: '3rem' }}>
-      <span className="section-number" aria-hidden="true">{number}</span>
-
-      <motion.p
-        className="section-label"
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
+    <div className="text-center mb-16">
+      {/* JARVIS readout label */}
+      <div
+        className="inline-flex items-center gap-3 mb-4"
+        style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.2em' }}
       >
-        {label}
-      </motion.p>
+        <span style={{ color: 'var(--color-faint)' }}>──</span>
+        <span style={{ color: 'var(--color-cyan)' }}>{protocol}</span>
+        <span style={{ color: 'var(--color-faint)' }}>──</span>
+      </div>
 
-      <motion.h2
-        className="section-heading"
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ delay: 0.1 }}
+      {/* Section heading */}
+      <h2
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
+          fontWeight: 800,
+          color: 'var(--color-text)',
+          lineHeight: 1.1,
+        }}
       >
-        {heading}
-      </motion.h2>
+        {title}
+      </h2>
+
+      {subtitle && (
+        <p
+          className="mt-3 max-w-xl mx-auto"
+          style={{ color: 'var(--color-muted)', fontSize: '0.95rem' }}
+        >
+          {subtitle}
+        </p>
+      )}
+
+      {/* Decorative line */}
+      <div className="flex items-center justify-center mt-6 gap-2">
+        <div style={{ height: '1px', width: '48px', background: 'var(--color-faint)' }} />
+        <div
+          style={{
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: 'var(--color-cyan)',
+            boxShadow: '0 0 8px var(--color-cyan)',
+          }}
+        />
+        <div style={{ height: '1px', width: '48px', background: 'var(--color-faint)' }} />
+      </div>
     </div>
-  )
+  );
 }

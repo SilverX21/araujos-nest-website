@@ -1,101 +1,98 @@
-export interface WorkExperience {
-  id: string
-  company: string
-  role: string
-  type: string
-  period: string
-  location: string
-  current: boolean
-  description: string
-  highlights: string[]
-  tech: string[]
+export interface ExperienceItem {
+  id: string;
+  company: string;
+  role: string;
+  type: string;
+  period: string;
+  location: string;
+  highlights: string[];
+  stack: string[];
 }
 
-export const experience: WorkExperience[] = [
+export const experience: ExperienceItem[] = [
   {
-    id: 'iss',
-    company: 'ISS Tech Team Portugal',
-    role: 'Software Developer',
-    type: 'Backend Developer',
-    period: 'Apr 2025 – Present',
-    location: 'Porto, Portugal',
-    current: true,
-    description:
-      'Working as a Backend Developer on multiple IoT projects that collect and process real-time building data to enable smart space management and predictive maintenance.',
+    id: "iss",
+    company: "ISS Tech Team Portugal",
+    role: "Software Developer (Backend)",
+    type: "Full-time",
+    period: "2025/04 – Present",
+    location: "Porto, Portugal",
     highlights: [
-      'Design, develop and maintain REST APIs and AWS Lambda functions for IoT data pipelines',
-      'Manage and optimise relational databases (PostgreSQL and SQL Server)',
-      'Work daily with AWS services: Lambda, S3, RDS, ECS, EC2, Secrets Manager',
-      'Deploy and manage containerised applications using Docker on AWS',
-      'Collaborate across teams for feature delivery and system reliability',
+      "IoT projects for smart building management — space management & predictive maintenance",
+      "Design and implementation of REST APIs and AWS Lambda functions",
+      "PostgreSQL and SQL Server database management",
+      "AWS infrastructure: Lambda, S3, RDS, ECS, EC2, Secrets Manager",
+      "Docker containerized deployments",
     ],
-    tech: ['.NET Core', 'C#', 'PostgreSQL', 'SQL Server', 'AWS', 'Docker', 'REST API'],
+    stack: [".NET Core", "C#", "PostgreSQL", "SQL Server", "AWS", "Docker"],
   },
   {
-    id: 'itsector',
-    company: 'ITSector, S.A.',
-    role: 'SI Consultant',
-    type: '.NET Developer',
-    period: 'Oct 2020 – Mar 2025',
-    location: 'Braga, Portugal',
-    current: false,
-    description:
-      'Over 4 years delivering software solutions for the banking and insurance sectors. Worked across API development, mobile backends, and public web portals. Also took on an analyst role during a major insurance company merger.',
+    id: "itsector",
+    company: "ITSector, S.A.",
+    role: "SI Consultant (.NET Developer)",
+    type: "Full-time",
+    period: "2020/10 – 2025/03",
+    location: "Braga, Portugal",
     highlights: [
-      "Developed RESTful APIs for Ageas (insurance) and Millennium BCP Poland (Goodie's flyer search & competition tracking)",
-      "Contributed to the backend of Montepio's Mobile App",
-      'Analyst role during the Ageas and Ocidental company merger process',
-      'Developed and maintained public portals: Montepio Crédito, FNB Banks, and others',
+      "Banking and insurance sector solutions across 4+ years",
+      "RESTful APIs for Ageas and Millennium BCP Poland (Goodie's platform)",
+      "Montepio Mobile App backend development",
+      "Analyst role for Ageas + Ocidental merger integration",
+      "Public portal development: Montepio Crédito, FNB Banks",
     ],
-    tech: ['.NET Core', 'C#', 'SQL Server', 'ASP.NET MVC', 'REST API', 'Agile / Scrum'],
+    stack: [
+      ".NET Core",
+      "C#",
+      "SQL Server",
+      "ASP.NET MVC",
+      "REST APIs",
+      "Agile",
+    ],
   },
   {
-    id: 'nrnow',
-    company: 'NRNow',
-    role: 'Software Developer',
-    type: 'Full-Stack Developer',
-    period: 'Jul 2019 – Jun 2020',
-    location: 'Braga, Portugal',
-    current: false,
-    description:
-      'Full-stack developer on RealPeritos, a portal dedicated to car inspection, investigation, and expert examination workflows.',
+    id: "nrnow",
+    company: "NRNow",
+    role: "Software Developer (Full-Stack)",
+    type: "Full-time",
+    period: "2019/07 – 2020/06",
+    location: "Braga, Portugal",
     highlights: [
-      'Developed and maintained new features across the RealPeritos platform',
-      'Worked across both front-end and back-end layers of the application',
-      'Collaborated closely within a small, fast-paced team',
+      "RealPeritos portal for car inspection and expert examination",
+      "Full-stack development covering front-end and back-end",
     ],
-    tech: ['.NET', 'C#', 'JavaScript', 'HTML', 'CSS', 'SQL Server'],
+    stack: [".NET", "C#", "JavaScript", "HTML", "CSS", "SQL Server"],
   },
   {
-    id: 'f3m',
-    company: 'F3M Information Systems, S.A.',
-    role: 'Software Developer',
-    type: 'Full-Stack Developer',
-    period: 'Mar 2018 – Mar 2019',
-    location: 'Braga, Portugal',
-    current: false,
-    description:
-      'Full-stack developer on two internal products: ESocial (HR/social management) and Produz (production management).',
+    id: "f3m-dev",
+    company: "F3M Information Systems S.A.",
+    role: "Software Developer",
+    type: "Full-time",
+    period: "2018/03 – 2019/03",
+    location: "Braga, Portugal",
     highlights: [
-      'Developed new features and maintained existing modules on ESocial and Produz',
-      'Worked across both UI and business logic layers of both platforms',
+      "ESocial and Produz internal products development",
+      "Full-stack development across both products",
     ],
-    tech: ['.NET', 'C#', 'JavaScript', 'HTML', 'CSS', 'SQL Server'],
+    stack: [".NET", "C#", "JavaScript", "HTML", "CSS", "SQL Server"],
   },
   {
-    id: 'f3m-trainee',
-    company: 'F3M Information Systems, S.A.',
-    role: 'Developer Trainee',
-    type: 'Internship',
-    period: 'Feb 2017 – Jun 2017',
-    location: 'Braga, Portugal',
-    current: false,
-    description:
-      "Professional internship during the final year of the Bachelor's degree. First industry exposure to enterprise software development.",
+    id: "f3m-trainee",
+    company: "F3M Information Systems S.A.",
+    role: "Developer Trainee",
+    type: "Internship",
+    period: "2017/02 – 2017/06",
+    location: "Braga, Portugal",
     highlights: [
-      'First professional exposure to enterprise .NET development',
-      'Contributed to internal tooling and tasks under mentorship',
+      "Professional internship — first industry experience",
+      "Introduction to enterprise software development practices",
     ],
-    tech: ['.NET', 'C#', 'SQL Server'],
+    stack: [".NET", "C#", "SQL Server"],
   },
-]
+];
+
+export const education = {
+  institution: "Instituto Politécnico do Cávado e do Ave (IPCA)",
+  degree: "Bachelor's Degree in Computer Systems Engineering",
+  period: "2013/10 – 2017/10",
+  location: "Barcelos, Portugal",
+};
