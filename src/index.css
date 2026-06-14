@@ -487,6 +487,9 @@ html.light {
   /* ── Photo ring ── */
   .photo-ring-wrapper {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 160px;
     height: 160px;
   }
@@ -522,82 +525,189 @@ html.light {
     margin-bottom: 1rem;
   }
 
-  /* Mobile: horizontal scroll carousel */
-  .about-lang-list {
+  /* ── Language carousel (embla) ── */
+  .lang-carousel-wrapper {
+    position: relative;
+  }
+
+  /* Embla viewport — clips the sliding content */
+  .lang-embla__viewport {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  /* Embla container — the scrolling flex row */
+  .lang-embla__container {
     display: flex;
-    flex-direction: row;
-    gap: 0.65rem;
-    overflow-x: auto;
-    overflow-y: visible;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 4px; /* room for tilt glow */
+    touch-action: pan-y pinch-zoom;
   }
 
-  .about-lang-list::-webkit-scrollbar {
-    display: none;
+  /* Each slide — 85 % wide on mobile so the next card peeks */
+  .lang-embla__slide {
+    flex: 0 0 85%;
+    min-width: 0;
+    padding-right: 0.75rem;
+    display: flex;
+    flex-direction: column;
   }
 
-  /* Tilt wrapper — carousel card on mobile, flex-1 on desktop */
+  /* Tilt wrapper fills the slide */
   .about-lang-tilt {
-    flex-shrink: 0;
-    width: 78vw;
-    max-width: 290px;
-    scroll-snap-align: start;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     transform-style: preserve-3d;
   }
 
-  /* ── Language card: signal-bars + circular flag ── */
+  /* Controls row: prev · dots · next */
+  .lang-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.9rem;
+  }
+
+  /* Arrow buttons */
+  .lang-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border-hover);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .lang-arrow:hover:not(:disabled) {
+    border-color: var(--color-cyan);
+    color: var(--color-cyan);
+    background: rgba(0, 194, 255, 0.08);
+  }
+
+  .lang-arrow:disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+
+  /* Pagination dots */
+  .lang-dots {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .lang-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-border-hover);
+    cursor: pointer;
+    transition: background 0.3s ease, width 0.3s ease, border-radius 0.3s ease;
+  }
+
+  .lang-dot--active {
+    width: 20px;
+    border-radius: 3px;
+    background: var(--color-cyan);
+    box-shadow: 0 0 8px rgba(0, 194, 255, 0.5);
+  }
+
+  /* ── Language card: passport-style vertical card ── */
   .lang-card {
     position: relative;
     overflow: hidden;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.85rem;
-    padding: 0.9rem 1.1rem;
+    flex-direction: column;
     background: var(--color-elevated);
     border: 1px solid var(--color-border);
     border-radius: 12px;
-    min-height: 76px;
     height: 100%;
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .lang-card:hover {
     border-color: var(--color-border-hover);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 194, 255, 0.07);
   }
 
-  /* Left: text + signal bars */
+  /* Flag banner — top portion of the card */
+  .lang-flag-banner {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* Gradient vignette at the bottom of the flag, blends into card body */
+  .lang-flag-banner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 35%,
+      rgba(20, 27, 39, 0.85) 100%
+    );
+    pointer-events: none;
+  }
+
+  .lang-flag-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.55s ease;
+  }
+
+  .lang-card:hover .lang-flag-img {
+    transform: scale(1.06);
+  }
+
+  /* Card body — language name + level-row */
   .lang-card-body {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.25rem;
+    padding: 0.7rem 0.85rem 0.85rem;
     flex: 1;
-    min-width: 0;
   }
 
   .lang-name {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     color: var(--color-text);
     line-height: 1;
     white-space: nowrap;
   }
 
+  /* Level text + signal bars wrapper */
+  /* Mobile/tablet default: stacked, centred */
+  .lang-level-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.1rem;
+  }
+
   .lang-level-text {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
+    font-size: 0.57rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-cyan);
-    margin-bottom: 0.4rem;
   }
 
-  /* Signal-strength bars (mobile antenna metaphor) */
+  /* Signal-strength bars */
   .lang-signal {
     display: flex;
     align-items: flex-end;
@@ -614,34 +724,6 @@ html.light {
   .lang-signal-bar.active {
     background: linear-gradient(to top, var(--color-cyan), var(--color-emerald));
     box-shadow: 0 0 7px rgba(0, 194, 255, 0.45);
-  }
-
-  /* Right: flag in a glowing circle */
-  .lang-flag-ring {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    overflow: hidden;
-    flex-shrink: 0;
-    border: 2px solid var(--color-border-hover);
-    box-shadow:
-      0 0 0 4px rgba(0, 194, 255, 0.06),
-      0 0 16px rgba(0, 194, 255, 0.18);
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
-  }
-
-  .lang-card:hover .lang-flag-ring {
-    border-color: var(--color-cyan);
-    box-shadow:
-      0 0 0 4px rgba(0, 194, 255, 0.1),
-      0 0 24px rgba(0, 194, 255, 0.3);
-  }
-
-  .lang-flag-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
   }
 
   /* ── Orbital Skill Rings ── */
@@ -1106,27 +1188,59 @@ html.light {
   text-align: center;
 }
 
-/* Orbital rings — scale down on mobile to fit */
-@media (max-width: 639px) {
-  .skill-orbit {
-    transform: scale(0.78);
-    transform-origin: center top;
-    margin-bottom: -3rem; /* compensate for scaled height */
-  }
+/* Skill display toggles — orbital rings desktop only, chips mobile/tablet */
+.skills-desktop-only { display: none; }
+.skills-mobile-only  { display: flex; }
+
+@media (min-width: 1024px) {
+  .skills-desktop-only { display: block; }
+  .skills-mobile-only  { display: none; }
 }
 
-/* Language cards — desktop: 3 in a row, no carousel */
+/* Language cards — tablet+: all 3 cards visible side by side, carousel disabled */
 @media (min-width: 768px) {
-  .about-lang-list {
-    overflow-x: visible;
-    flex-wrap: nowrap;
+  /* Unlock the viewport so all slides show at once */
+  .lang-embla__viewport {
+    overflow: visible;
   }
 
+  /* Each slide takes an equal share of the row */
+  .lang-embla__slide {
+    flex: 1;
+    padding-right: 0;
+  }
+
+  /* Gap between cards */
+  .lang-embla__container {
+    gap: 0.85rem;
+  }
+
+  /* Tilt fills full height */
   .about-lang-tilt {
     flex: 1;
-    width: auto;
-    max-width: none;
-    scroll-snap-align: none;
+  }
+
+  /* Card fills the tilt wrapper */
+  .lang-card {
+    flex: 1;
+  }
+
+  /* Hide carousel controls */
+  .lang-controls {
+    display: none;
+  }
+
+  /* Level row: inline on desktop */
+  .lang-level-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .lang-level-row .lang-signal {
+    transform: scale(0.72);
+    transform-origin: left center;
+    flex-shrink: 0;
   }
 }
 
