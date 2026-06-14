@@ -23,20 +23,20 @@
 
 /* Light mode overrides */
 html.light {
-  --color-bg: #F0F4F8;
+  --color-bg: #EEF2F7;
   --color-surface: #FFFFFF;
-  --color-elevated: #E2EAF0;
-  --color-cyan: #0077B6;
-  --color-orange: #C84B11;
-  --color-emerald: #00875A;
-  --color-text: #0D1B2A;
-  --color-muted: #4A6070;
-  --color-faint: #94A3B8;
-  --color-border: rgba(0, 119, 182, 0.12);
-  --color-border-hover: rgba(0, 119, 182, 0.3);
-  --color-cyan-dim: rgba(0, 119, 182, 0.1);
-  --color-orange-dim: rgba(200, 75, 17, 0.1);
-  --color-emerald-dim: rgba(0, 135, 90, 0.1);
+  --color-elevated: #DDE5EE;
+  --color-cyan: #005F8E;
+  --color-orange: #B83D08;
+  --color-emerald: #006B46;
+  --color-text: #0A1628;
+  --color-muted: #374D5E;
+  --color-faint: #536475;
+  --color-border: rgba(0, 95, 142, 0.2);
+  --color-border-hover: rgba(0, 95, 142, 0.45);
+  --color-cyan-dim: rgba(0, 95, 142, 0.1);
+  --color-orange-dim: rgba(184, 61, 8, 0.1);
+  --color-emerald-dim: rgba(0, 107, 70, 0.1);
 }
 
 *,
@@ -267,22 +267,26 @@ body::after {
 
 /* Platform badge colors */
 .badge-udemy {
-  background: rgba(160, 80, 240, 0.15);
-  color: #A050F0;
+  background: rgba(160, 80, 240, 0.12);
+  color: #7B2FBE;
   border: 1px solid rgba(160, 80, 240, 0.3);
 }
 .badge-dometrain {
-  background: rgba(255, 107, 53, 0.15);
+  background: var(--color-orange-dim);
   color: var(--color-orange);
-  border: 1px solid rgba(255, 107, 53, 0.3);
+  border: 1px solid var(--color-border);
 }
 .badge-mosh {
-  background: rgba(0, 194, 255, 0.15);
+  background: var(--color-cyan-dim);
   color: var(--color-cyan);
-  border: 1px solid rgba(0, 194, 255, 0.3);
+  border: 1px solid var(--color-border);
 }
 .badge-rumos {
-  background: rgba(0, 214, 143, 0.15);
+  background: var(--color-emerald-dim);
   color: var(--color-emerald);
-  border: 1px solid rgba(0, 214, 143, 0.3);
+  border: 1px solid var(--color-border);
+}
+
+html.light .badge-udemy {
+  color: #6B21A8;
 }

@@ -39,9 +39,9 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
         right: 0,
         zIndex: 100,
         height: '64px',
-        background: scrolled
-          ? 'rgba(7, 9, 15, 0.95)'
-          : 'rgba(7, 9, 15, 0.8)',
+        background: theme === 'dark'
+          ? (scrolled ? 'rgba(7, 9, 15, 0.95)' : 'rgba(7, 9, 15, 0.8)')
+          : (scrolled ? 'rgba(238, 242, 247, 0.97)' : 'rgba(238, 242, 247, 0.88)'),
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         borderBottom: '1px solid var(--color-border)',
@@ -211,7 +211,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
               top: '64px',
               left: 0,
               right: 0,
-              background: 'rgba(7, 9, 15, 0.98)',
+              background: theme === 'dark' ? 'rgba(7, 9, 15, 0.98)' : 'rgba(238, 242, 247, 0.99)',
               backdropFilter: 'blur(16px)',
               borderBottom: '1px solid var(--color-border)',
               padding: '1.5rem',
