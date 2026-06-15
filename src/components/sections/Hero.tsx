@@ -158,10 +158,13 @@ export default function Hero() {
           fontSize: "0.6rem",
           color: "rgba(0,194,255,0.3)",
           letterSpacing: "0.25em",
-          whiteSpace: "nowrap",
+          textAlign: "center",
+          lineHeight: 1.8,
+          width: "calc(100vw - 3rem)",
         }}
       >
-        SYSTEM.ONLINE // INITIALIZING PORTFOLIO v2.0 // STARK.INDUSTRIES
+        <div style={{ whiteSpace: "nowrap" }}>SYSTEM.ONLINE // INITIALIZING PORTFOLIO</div>
+        <div style={{ whiteSpace: "nowrap" }}>v2.0 // STARK.INDUSTRIES</div>
       </div>
 
       {/* HUD coordinates */}
@@ -206,7 +209,7 @@ export default function Hero() {
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "80px 1.5rem 0",
+          padding: "132px 1.5rem 0",
           width: "100%",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))",
@@ -217,7 +220,7 @@ export default function Hero() {
         }}
       >
         {/* Text column */}
-        <div>
+        <div className="text-center md:text-left">
           {/* Status badge */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -299,9 +302,8 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.35 }}
+            className="flex items-center justify-center md:justify-start"
             style={{
-              display: "flex",
-              alignItems: "center",
               gap: "6px",
               fontFamily: "var(--font-mono)",
               fontSize: "0.75rem",
@@ -319,6 +321,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
+            className="mx-auto md:mx-0"
             style={{
               color: "var(--color-muted)",
               fontSize: "1rem",
@@ -335,9 +338,8 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex flex-wrap justify-center md:justify-start"
             style={{
-              display: "flex",
-              flexWrap: "wrap",
               gap: "1rem",
               marginBottom: "2rem",
             }}
@@ -396,7 +398,8 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.55 }}
-            style={{ display: "flex", gap: "12px" }}
+            className="flex justify-center md:justify-start"
+            style={{ gap: "12px" }}
           >
             <a
               href={profile.github}
@@ -452,6 +455,7 @@ export default function Hero() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            padding: "24px",
           }}
         >
           <div style={{ position: "relative", display: "inline-block" }}>
@@ -518,8 +522,6 @@ export default function Hero() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    flexDirection: "column",
-                    gap: "8px",
                   }}
                 >
                   <span
@@ -535,16 +537,6 @@ export default function Hero() {
                     }}
                   >
                     NA
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.6rem",
-                      color: "var(--color-faint)",
-                      letterSpacing: "0.2em",
-                    }}
-                  >
-                    PROFILE.IMG
                   </span>
                 </div>
               )}
@@ -562,12 +554,29 @@ export default function Hero() {
               />
             </div>
 
+            {/* PROFILE.IMG label below circle */}
+            {imgError && (
+              <div
+                aria-hidden
+                style={{
+                  textAlign: "center",
+                  marginTop: "16px",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.6rem",
+                  color: "var(--color-faint)",
+                  letterSpacing: "0.2em",
+                }}
+              >
+                PROFILE.IMG
+              </div>
+            )}
+
             {/* HUD data overlay */}
             <div
               aria-hidden
               style={{
                 position: "absolute",
-                bottom: "-8px",
+                bottom: "8px",
                 left: "50%",
                 transform: "translateX(-50%)",
                 fontFamily: "var(--font-mono)",
