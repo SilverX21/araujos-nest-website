@@ -257,7 +257,7 @@ export default function Hero() {
                 }}
               />
               <Wifi size={10} />
-              Available for Opportunities
+              Hello World! I'm online.
             </div>
           </motion.div>
 
