@@ -32,8 +32,8 @@ export default function BorderBeam({
       const perimeter = 2 * (rect.width + rect.height);
       const pos = progress * perimeter;
 
-      let x = 0;
-      let y = 0;
+      let x: number;
+      let y: number;
 
       if (pos < rect.width) {
         // Top edge

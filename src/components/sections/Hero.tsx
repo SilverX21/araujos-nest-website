@@ -33,10 +33,11 @@ function TypewriterText({ words }: { words: string[] }) {
       timeout = setTimeout(() => {
         setDisplay(current.slice(0, charIdx - 1));
         setCharIdx((c) => c - 1);
+        if (charIdx === 1) {
+          setDeleting(false);
+          setWordIdx((w) => (w + 1) % words.length);
+        }
       }, 40);
-    } else if (deleting && charIdx === 0) {
-      setDeleting(false);
-      setWordIdx((w) => (w + 1) % words.length);
     }
 
     return () => clearTimeout(timeout);
