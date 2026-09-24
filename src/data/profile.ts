@@ -1,10 +1,12 @@
+import photo from "../assets/profile.png";
+
 export const profile = {
   name: "Nuno Araújo",
   role: "Software Developer",
   location: "Braga, Portugal",
   linkedin: "https://linkedin.com/in/nuno-araújo-202295132",
   github: "https://github.com/SilverX21",
-  photo: "/profile.png",
+  photo,
   tagline: "Backend Engineer · .NET · AWS · Cloud Native",
   bio: "Software Developer specializing in backend systems with 7+ years building APIs, cloud infrastructure, and scalable solutions for banking, insurance, and IoT sectors.",
   softSkills: [
