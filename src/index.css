@@ -116,7 +116,8 @@ footer {
   background: radial-gradient(circle, rgba(143, 220, 255, 0.14), transparent 65%);
   pointer-events: none;
 }
-@media (max-width: 767px) {
+/* Stacked composition; keep in sync with RENDER.mobileQuery */
+@media (max-width: 767px), (orientation: portrait) {
   .hero-backword {
     top: 24%;
     right: 50%;

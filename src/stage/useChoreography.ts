@@ -44,6 +44,10 @@ function buildMotion(layout: Layout, stage: HTMLElement) {
     const skip = () => intro.progress(1);
     if (window.scrollY > 0) skip();
     else window.addEventListener('scroll', skip, { once: true, passive: true });
+  } else {
+    // A breakpoint change reverted the old context (rig back to its pre-intro values).
+    // Start from the hero pose; any scrubbed timeline in range overrides it on refresh.
+    apply(P('hero'));
   }
 
   const { hero, flyby, offstage, reactor } = SCENES;

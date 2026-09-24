@@ -8,7 +8,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-svh items-end overflow-hidden md:items-center"
+      className="relative flex min-h-svh items-end overflow-hidden md:landscape:items-center"
     >
       {/* Reactor glow behind the suit; also the whole visual when WebGL is off */}
       <div aria-hidden className="hero-glow" />
@@ -16,8 +16,8 @@ export default function Hero() {
         Backend
       </p>
 
-      <div className="relative z-2 mx-auto w-full max-w-[1200px] px-6 pb-16 md:pb-0 md:pt-16">
-        <div className="md:max-w-[55%]">
+      <div className="relative z-2 mx-auto w-full max-w-[1200px] px-6 pb-16 md:landscape:pb-0 md:landscape:pt-16">
+        <div className="md:landscape:max-w-[55%]">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyan">
             {profile.role} · {profile.location}
           </p>
@@ -55,7 +55,7 @@ export default function Hero() {
 
       <a
         href="#about"
-        className="absolute bottom-8 left-1/2 z-2 hidden -translate-x-1/2 flex-col items-center gap-1 font-mono text-[0.6rem] tracking-[0.2em] text-faint transition-colors hover:text-cyan md:flex"
+        className="absolute bottom-8 left-1/2 z-2 hidden -translate-x-1/2 flex-col items-center gap-1 font-mono text-[0.6rem] tracking-[0.2em] text-faint transition-colors hover:text-cyan md:landscape:flex"
       >
         SCROLL
         <ArrowDown size={14} />

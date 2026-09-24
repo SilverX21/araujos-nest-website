@@ -138,6 +138,7 @@ Repulsor charge/blast, a separate final fly-by, custom cursor, magnetic buttons,
 - **Hero exit:** the suit leans *back* (rising launch) instead of forward, and the turn/launch runs at 25–90% of the hero, so it clears frame before About's title arrives.
 - **Fly-by:** the canvas moves in front of the content (`.stage.is-front`) while the fly-by is active. Without that, the pass hid behind About's cards and Skills' opaque band. It stays `pointer-events: none`. Range: About `center center` → About bottom at 30% of the viewport.
 - **Reactor → Finale:** runs inside a new `#contact` section (`Finale.tsx`) instead of over Extracurricular, whose opaque cards would cover the close-up. `#contact` is 180svh only while the choreography runs (`html.cinematic`); otherwise it's 100svh.
+- **Tablet:** no separate ×0.7 travel config. Landscape tablets use desktop, portrait tablets use the stacked layout; both looked right, so a third pose set wasn't worth the tuning.
 - **Title pulse:** "Let's build the future!" gets a one-shot tracking snap when it enters the viewport, rather than being scrubbed, because the scrubbed pulse happened before the title was on screen.
 
 ---
@@ -146,9 +147,8 @@ Repulsor charge/blast, a separate final fly-by, custom cursor, magnetic buttons,
 
 | Case | Behaviour |
 |---|---|
-| Desktop ≥ 1024 | full choreography above, DPR ≤ 2 |
-| Tablet 768–1023 | desktop keyframes × 0.7 travel, DPR ≤ 1.5, fewer particles |
-| Mobile < 768 | `scenes.ts` mobile overrides (vertical fly-by, centred framing), DPR ≤ 1.5, no shadows, ~1/4 particles |
+| Landscape ≥ 768 px (desktop, landscape tablets) | full choreography, DPR ≤ 2 |
+| Portrait (any width) or < 768 px | stacked composition: suit above the text, vertical fly-by, the `mobile` overrides in `scenes.ts`, DPR ≤ 1.5. Picked by aspect ratio, not width: a portrait tablet with the desktop pose put the suit on top of the text. `RENDER.mobileQuery` and the CSS media query in `index.css` must stay in sync |
 | `prefers-reduced-motion` | no Lenis, no intro, no fly-by. The suit is shown static in its hero pose, and the reactor close-up becomes a crossfade. Content is unchanged |
 | No WebGL / model fails / `saveData` | the canvas is never mounted. The page is the plain DOM site with a CSS radial "reactor" glow behind the hero. Everything is still readable and navigable |
 | Loading | the canvas is lazy (`React.lazy`) after first paint. The hero DOM shows immediately (LCP = text, not WebGL) |
@@ -169,7 +169,16 @@ Section ids and nav anchors stay the same. The canvas is `aria-hidden`.
 
 ---
 
-## 7. Implementation order
+## 7. Performance (measured on a production build, M1 Pro)
+
+- Largest contentful paint: ~110 ms, and it's the hero text, not WebGL. CLS 0, no long tasks.
+- The main chunk is 124 KB gzipped. three.js/R3F (284 KB gz), GSAP + ScrollTrigger + Lenis (~50 KB gz) and the model load after first paint.
+- CPU per frame (GSAP tick + Lenis + ScrollTrigger + R3F render submit): ~1 ms median, ~2 ms p95 in every scene.
+- Offstage (Skills → Projects): R3F `advance()` is skipped entirely.
+- Frames stop when the tab is hidden (the gsap ticker runs on requestAnimationFrame).
+- **Not measured:** GPU time on low-end phones. Check this on a real mid-range Android once the final model exists, since its triangle count and textures will dominate.
+
+## 8. Implementation order
 
 1. Cleanup: light theme, Marvel references, ParticleCanvas, HUD clutter.
 2. Foundation: deps, `smoothScroll.ts` (Lenis + ticker), lazy `Stage` + fallback detection, placeholder suit, lights. Check `build`, `lint`, and the browser.

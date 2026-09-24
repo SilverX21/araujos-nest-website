@@ -211,8 +211,9 @@ export const SCENES = {
 } as const;
 
 export const RENDER = {
-  mobileQuery: '(max-width: 767px)',
-  desktopQuery: '(min-width: 768px)',
+  // 'mobile' is the stacked composition: phones and any portrait screen (tablets included).
+  mobileQuery: '(max-width: 767px), (orientation: portrait)',
+  desktopQuery: '(min-width: 768px) and (orientation: landscape)',
   maxDpr: { desktop: 2, mobile: 1.5 },
 };
 
