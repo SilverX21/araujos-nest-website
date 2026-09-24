@@ -133,6 +133,13 @@ This is the dense, recruiter-critical content (skills, experience, education, ce
 ### Deferred (post-MVP)
 Repulsor charge/blast, a separate final fly-by, custom cursor, magnetic buttons, post-processing, KTX2, a tablet-specific choreography (tablet uses the desktop config with reduced travel).
 
+### Changes after implementation (step 4)
+- **Arrival:** the hero text is visible straight away instead of staggering in at the end of the intro. Hiding the `h1` would delay LCP by ~2 s, and the suit flying in behind already-present type still reads well.
+- **Hero exit:** the suit leans *back* (rising launch) instead of forward, and the turn/launch runs at 25–90% of the hero, so it clears frame before About's title arrives.
+- **Fly-by:** the canvas moves in front of the content (`.stage.is-front`) while the fly-by is active. Without that, the pass hid behind About's cards and Skills' opaque band. It stays `pointer-events: none`. Range: About `center center` → About bottom at 30% of the viewport.
+- **Reactor → Finale:** runs inside a new `#contact` section (`Finale.tsx`) instead of over Extracurricular, whose opaque cards would cover the close-up. `#contact` is 180svh only while the choreography runs (`html.cinematic`); otherwise it's 100svh.
+- **Title pulse:** "Let's build the future!" gets a one-shot tracking snap when it enters the viewport, rather than being scrubbed, because the scrubbed pulse happened before the title was on screen.
+
 ---
 
 ## 5. Responsive, a11y, fallback

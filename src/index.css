@@ -67,6 +67,17 @@ body::before {
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.stage.is-hidden {
+  opacity: 0;
+}
+.stage.is-front {
+  z-index: 3;
+}
+/* Room for the reactor close-up; only while the scroll choreography runs */
+.cinematic #contact {
+  min-height: 180svh;
 }
 main > section:not(#hero),
 footer {
@@ -80,7 +91,8 @@ footer {
   z-index: 0;
   top: 50%;
   right: -0.04em;
-  transform: translateY(-50%);
+  /* --py / --ps are driven by the scroll choreography */
+  transform: translateY(calc(-50% + var(--py, 0px))) scale(var(--ps, 1));
   font-family: var(--font-display);
   font-weight: 800;
   font-size: clamp(5rem, 19vw, 20rem);
@@ -108,7 +120,7 @@ footer {
   .hero-backword {
     top: 24%;
     right: 50%;
-    transform: translate(50%, -50%);
+    transform: translate(50%, calc(-50% + var(--py, 0px))) scale(var(--ps, 1));
     font-size: 26vw;
   }
   .hero-glow {

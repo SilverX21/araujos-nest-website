@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
+import { Suspense, useEffect, useRef, type RefObject } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, Lightformer } from '@react-three/drei';
 import gsap from 'gsap';
+import type { DirectionalLight, PointLight } from 'three';
 import Suit from './Suit';
 import CameraRig from './CameraRig';
+import { useChoreography } from './useChoreography';
 import { RENDER, getLayout } from './scenes';
 import { pointer, rig } from './rig';
 
@@ -11,20 +13,41 @@ import { pointer, rig } from './rig';
 function Ticker() {
   const advance = useThree((s) => s.advance);
   useEffect(() => {
-    const tick = (time: number) => advance(time);
+    const tick = (time: number) => {
+      if (!rig.paused) advance(time);
+    };
     gsap.ticker.add(tick);
     return () => gsap.ticker.remove(tick);
   }, [advance]);
   return null;
 }
 
+// Mounted next to the Suit so the timelines start only once the model is ready.
+function Choreography({ stage }: { stage: RefObject<HTMLDivElement | null> }) {
+  useChoreography(stage);
+  return null;
+}
+
+const KEY = 1.6;
+const RIM = 3;
+const ACCENT = 6;
+
 function Lights() {
+  const key = useRef<DirectionalLight>(null!);
+  const rim = useRef<DirectionalLight>(null!);
+  const accent = useRef<PointLight>(null!);
+  useFrame(({ scene }) => {
+    key.current.intensity = KEY * rig.light;
+    rim.current.intensity = RIM * rig.light;
+    accent.current.intensity = ACCENT * rig.light;
+    scene.environmentIntensity = rig.light;
+  });
   return (
     <>
       <ambientLight intensity={0.15} />
-      <directionalLight position={[3, 4, 5]} intensity={1.6} color="#fff1e0" />
-      <directionalLight position={[-4, 2, -3]} intensity={3} color="#7fd8ff" />
-      <pointLight position={[2, -2, -2]} intensity={6} distance={6} color="#ff3b30" />
+      <directionalLight ref={key} position={[3, 4, 5]} color="#fff1e0" />
+      <directionalLight ref={rim} position={[-4, 2, -3]} color="#7fd8ff" />
+      <pointLight ref={accent} position={[2, -2, -2]} distance={6} color="#ff3b30" />
       <Environment resolution={256}>
         <Lightformer intensity={4} position={[0, 5, -4]} scale={[10, 2, 1]} />
         <Lightformer intensity={3} color="#ffb56b" position={[5, 1, 2]} rotation-y={-Math.PI / 2} scale={[6, 1, 1]} />
@@ -35,6 +58,7 @@ function Lights() {
 }
 
 export default function Stage({ reducedMotion }: { reducedMotion: boolean }) {
+  const stage = useRef<HTMLDivElement>(null);
   const layout = getLayout();
 
   useEffect(() => {
@@ -49,7 +73,7 @@ export default function Stage({ reducedMotion }: { reducedMotion: boolean }) {
 
   const { camera } = rig;
   return (
-    <div className="stage" aria-hidden>
+    <div ref={stage} className="stage" aria-hidden>
       <Canvas
         frameloop="never"
         dpr={[1, RENDER.maxDpr[layout]]}
@@ -59,7 +83,10 @@ export default function Stage({ reducedMotion }: { reducedMotion: boolean }) {
         <Ticker />
         <fog attach="fog" args={['#07090F', 6, 18]} />
         <Lights />
-        <Suit animate={!reducedMotion} />
+        <Suspense fallback={null}>
+          <Suit animate={!reducedMotion} />
+          <Choreography stage={stage} />
+        </Suspense>
         <CameraRig />
       </Canvas>
     </div>

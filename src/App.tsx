@@ -9,6 +9,7 @@ import Education from './components/sections/Education';
 import Certifications from './components/sections/Certifications';
 import Projects from './components/sections/Projects';
 import Extracurricular from './components/sections/Extracurricular';
+import Finale from './components/sections/Finale';
 import { canRender3D, prefersReducedMotion } from './stage/support';
 
 const Stage = lazy(() => import('./stage/Stage'));
@@ -60,6 +61,7 @@ export default function App() {
         <Certifications />
         <Projects />
         <Extracurricular />
+        <Finale />
       </main>
       <Footer />
     </div>

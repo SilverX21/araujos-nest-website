@@ -11,6 +11,7 @@ const gunmetal = new MeshStandardMaterial({ color: '#5d646e', metalness: 0.85, r
 export default function Suit({ animate }: { animate: boolean }) {
   const group = useRef<Group>(null!);
   const reactorLight = useRef<PointLight>(null!);
+  const thrustLight = useRef<PointLight>(null!);
   const { scene, animations } = useGLTF(SUIT_MODEL_URL);
   const { actions } = useAnimations(animations, group);
 
@@ -44,19 +45,22 @@ export default function Suit({ animate }: { animate: boolean }) {
     g.rotation.z = suit.rz + Math.sin(t * IDLE.hoverSpeed * 0.7) * IDLE.swayRadians;
     g.rotation.y = MathUtils.damp(g.rotation.y, suit.ry + pointer.x * IDLE.pointerYaw, IDLE.damping, dt);
     reactorLight.current.intensity = rig.reactor * (2.5 + Math.sin(t * 2) * 0.4);
+    thrustLight.current.intensity = rig.thrust * (8 + Math.sin(t * 30) * 1.5);
   });
 
   return (
     <group ref={group}>
       <primitive object={scene} scale={fit.scale} position-y={fit.y} />
-      {/* ponytail: stand-in reactor at a fixed chest offset; use the model's `Reactor` mesh once the final GLB exists */}
-      <group position={[0, 0.05, 0.32]}>
+      {/* ponytail: stand-in reactor at a configured offset; use the model's `Reactor` mesh once the final GLB exists */}
+      <group position={SUIT.reactorOffset}>
         <mesh>
           <sphereGeometry args={[0.06, 24, 24]} />
           <meshBasicMaterial color="#cfefff" toneMapped={false} />
         </mesh>
         <pointLight ref={reactorLight} color="#8fdcff" distance={3} decay={2} />
       </group>
+      {/* ponytail: one underglow light stands in for thrusters; use the model's `Thruster_*` meshes later */}
+      <pointLight ref={thrustLight} position={[0, -1.3, 0.2]} color="#ff6a3d" distance={2.5} decay={2} />
     </group>
   );
 }
