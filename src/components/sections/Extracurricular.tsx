@@ -45,7 +45,7 @@ export default function Extracurricular() {
               key={i}
               variants={fadeInUp}
               transition={{ duration: 0.65 }}
-              className="jarvis-card"
+              className="bracket-card"
               style={{
                 padding: "2rem",
                 background: "var(--color-surface)",
@@ -136,7 +136,7 @@ export default function Extracurricular() {
           <motion.div
             variants={fadeInUp}
             transition={{ duration: 0.65 }}
-            className="jarvis-card"
+            className="bracket-card"
             style={{
               padding: "2rem",
               background: "var(--color-surface)",

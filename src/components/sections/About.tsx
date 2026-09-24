@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { User, Globe, Heart, Compass } from 'lucide-react';
+import { Globe, Heart, Compass } from 'lucide-react';
 import SectionTitle from '../ui/SectionTitle';
 import { profile } from '../../data/profile';
 
@@ -46,7 +46,7 @@ export default function About() {
           <motion.div
             variants={fadeInUp}
             transition={{ duration: 0.65 }}
-            className="jarvis-card md:col-span-2"
+            className="bracket-card md:col-span-2"
             style={{
               padding: '2rem',
               background: 'var(--color-surface)',
@@ -60,24 +60,24 @@ export default function About() {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '10px',
+                gap: '14px',
                 marginBottom: '1rem',
               }}
             >
-              <div
+              <img
+                src={profile.photo}
+                alt={profile.name}
+                width={56}
+                height={56}
+                loading="lazy"
                 style={{
-                  width: '32px',
-                  height: '32px',
+                  width: '56px',
+                  height: '56px',
+                  objectFit: 'cover',
                   border: '1px solid var(--color-cyan)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--color-cyan)',
                   flexShrink: 0,
                 }}
-              >
-                <User size={14} />
-              </div>
+              />
               <span
                 style={{
                   fontFamily: 'var(--font-mono)',
@@ -109,7 +109,7 @@ export default function About() {
           <motion.div
             variants={fadeInUp}
             transition={{ duration: 0.65 }}
-            className="jarvis-card"
+            className="bracket-card"
             style={{
               padding: '2rem',
               background: 'var(--color-surface)',
@@ -181,7 +181,7 @@ export default function About() {
           <motion.div
             variants={fadeInUp}
             transition={{ duration: 0.65 }}
-            className="jarvis-card"
+            className="bracket-card"
             style={{
               padding: '2rem',
               background: 'var(--color-surface)',
@@ -255,7 +255,7 @@ export default function About() {
           <motion.div
             variants={fadeInUp}
             transition={{ duration: 0.65 }}
-            className="jarvis-card"
+            className="bracket-card"
             style={{
               padding: '2rem',
               background: 'var(--color-surface)',

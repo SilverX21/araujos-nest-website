@@ -71,7 +71,7 @@ export default function Experience() {
                 >
                   {/* Only show content on the correct side on desktop */}
                   <div
-                    className="jarvis-card"
+                    className="bracket-card"
                     style={{
                       padding: '1.75rem',
                       background: 'var(--color-surface)',

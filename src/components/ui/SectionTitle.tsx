@@ -7,7 +7,7 @@ interface SectionTitleProps {
 export default function SectionTitle({ protocol, title, subtitle }: SectionTitleProps) {
   return (
     <div className="text-center mb-16">
-      {/* JARVIS readout label */}
+      {/* Readout label */}
       <div
         className="inline-flex items-center gap-3 mb-4"
         style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.2em' }}

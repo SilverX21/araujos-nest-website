@@ -118,7 +118,7 @@ export default function Projects() {
             style={{ maxWidth: '640px', margin: '0 auto' }}
           >
             <div
-              className="jarvis-card"
+              className="bracket-card"
               style={{
                 padding: '3rem 2rem',
                 background: 'var(--color-elevated)',
