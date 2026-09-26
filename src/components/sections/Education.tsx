@@ -39,7 +39,7 @@ export default function Education() {
             style={{ maxWidth: '720px', margin: '0 auto' }}
           >
             <div
-              className="jarvis-card"
+              className="bracket-card"
               style={{
                 padding: '2.5rem',
                 background: 'var(--color-elevated)',

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { Component, lazy, Suspense, useEffect, useState, type ReactNode } from 'react';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Hero from './components/sections/Hero';
@@ -9,36 +9,49 @@ import Education from './components/sections/Education';
 import Certifications from './components/sections/Certifications';
 import Projects from './components/sections/Projects';
 import Extracurricular from './components/sections/Extracurricular';
+import Finale from './components/sections/Finale';
+import { canRender3D, prefersReducedMotion } from './stage/support';
 
-type Theme = 'dark' | 'light';
+const Stage = lazy(() => import('./stage/Stage'));
 
-function getInitialTheme(): Theme {
-  if (typeof window === 'undefined') return 'dark';
-  const stored = localStorage.getItem('theme');
-  if (stored === 'light' || stored === 'dark') return stored;
-  return 'dark';
+// A failed model load or WebGL crash drops the 3D layer; the DOM site stays intact.
+class StageBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
 }
 
 export default function App() {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [reducedMotion] = useState(prefersReducedMotion);
+  const [show3D] = useState(canRender3D);
 
   useEffect(() => {
-    const html = document.documentElement;
-    if (theme === 'light') {
-      html.classList.add('light');
-    } else {
-      html.classList.remove('light');
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
-  };
+    if (reducedMotion) return;
+    let stop: (() => void) | undefined;
+    let cancelled = false;
+    import('./stage/smoothScroll').then(({ startSmoothScroll }) => {
+      if (!cancelled) stop = startSmoothScroll();
+    });
+    return () => {
+      cancelled = true;
+      stop?.();
+    };
+  }, [reducedMotion]);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--color-bg)' }}>
-      <Navbar theme={theme} onToggleTheme={toggleTheme} />
+      {show3D && (
+        <StageBoundary>
+          <Suspense fallback={null}>
+            <Stage reducedMotion={reducedMotion} />
+          </Suspense>
+        </StageBoundary>
+      )}
+      <Navbar />
       <main>
         <Hero />
         <About />
@@ -48,6 +61,7 @@ export default function App() {
         <Certifications />
         <Projects />
         <Extracurricular />
+        <Finale />
       </main>
       <Footer />
     </div>

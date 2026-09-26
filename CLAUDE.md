@@ -20,9 +20,10 @@ Pushing to `main` deploys to GitHub Pages (`.github/workflows/deploy.yml`, Node 
 ## Architecture
 
 - **Content lives in `src/data/*.ts`** (profile, experience + education, skills, certifications). Section components import these arrays directly, so content edits belong in `data/`, not in JSX.
-- **`App.tsx`** stacks the sections in order and owns theme state. The theme toggles an `html.light` class and is persisted in `localStorage`, with dark as the default.
+- **`App.tsx`** stacks the sections in order and mounts the lazy 3D `Stage` (skipped when WebGL is unavailable or `saveData` is on; dropped by an error boundary if it fails). Dark-only; there is no light theme.
+- **`src/stage/`** is the 3D + scroll layer (R3F, GSAP, Lenis). `gsap.ticker` is the single frame loop driving Lenis and R3F (`frameloop="never"`). All choreography numbers live in `stage/scenes.ts`; GSAP and `useFrame` share state only through `stage/rig.ts`. See `docs/STORYBOARD.md`.
 - **Sections** (`components/sections/`) each render a `<section id="...">`; navigation is hash anchors (`#experience`, etc.), so keep ids stable.
-- **Design system is in `src/index.css`**: Tailwind v4 `@theme` tokens (`--color-*`, `--font-*`) with light-mode overrides under `html.light`, plus shared component classes (`.glass-card`, `.skill-tag`, `.section-label`, `.section-number`, `.gradient-text`, `.section-container`). Use the tokens (`var(--color-cyan)`) instead of hard-coded colors so both themes keep working.
+- **Design system is in `src/index.css`**: Tailwind v4 `@theme` tokens (`--color-*`, `--font-*`), the depth layers (hero back word < `.stage` canvas < content), plus shared component classes (`.skill-tag`, `.section-label`, `.section-number`, `.gradient-text`, `.section-container`). Use the tokens (`var(--color-cyan)`) instead of hard-coded colors so both themes keep working.
 - **`docs/SPEC.md`** is the design spec ("Blueprint Noir"): section contents, palette, typography, responsive breakpoints per section, and animation rules. Check it before changing layout or visuals. `docs/CV.md` is the source CV data.
 
 ## Agent skills

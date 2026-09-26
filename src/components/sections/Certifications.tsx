@@ -102,7 +102,7 @@ export default function Certifications() {
               viewport={{ once: true, margin: '-20px' }}
               variants={fadeInUp}
               transition={{ duration: 0.45, delay: (i % 8) * 0.04 }}
-              className="jarvis-card"
+              className="bracket-card"
               style={{
                 padding: '1.25rem',
                 background: 'var(--color-surface)',

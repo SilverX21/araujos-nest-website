@@ -21,34 +21,11 @@
   --font-mono: "JetBrains Mono", monospace;
 }
 
-/* Light mode overrides */
-html.light {
-  --color-bg: #EEF2F7;
-  --color-surface: #FFFFFF;
-  --color-elevated: #DDE5EE;
-  --color-cyan: #005F8E;
-  --color-orange: #B83D08;
-  --color-emerald: #006B46;
-  --color-text: #0A1628;
-  --color-muted: #374D5E;
-  --color-faint: #536475;
-  --color-border: rgba(0, 95, 142, 0.2);
-  --color-border-hover: rgba(0, 95, 142, 0.45);
-  --color-cyan-dim: rgba(0, 95, 142, 0.1);
-  --color-orange-dim: rgba(184, 61, 8, 0.1);
-  --color-emerald-dim: rgba(0, 107, 70, 0.1);
-}
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -79,25 +56,83 @@ body::before {
   z-index: 0;
 }
 
-/* Subtle scanline overlay */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 194, 255, 0.008) 2px,
-    rgba(0, 194, 255, 0.008) 4px
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
 #root {
   position: relative;
   z-index: 1;
+}
+
+/* Depth layers: hero back word (0) < 3D stage (1) < content (2) */
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.stage.is-hidden {
+  opacity: 0;
+}
+.stage.is-front {
+  z-index: 3;
+}
+/* Room for the reactor close-up; only while the scroll choreography runs */
+.cinematic #contact {
+  min-height: 180svh;
+}
+main > section:not(#hero),
+footer {
+  position: relative;
+  z-index: 2;
+}
+
+/* Hero */
+.hero-backword {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: -0.04em;
+  /* --py / --ps are driven by the scroll choreography */
+  transform: translateY(calc(-50% + var(--py, 0px))) scale(var(--ps, 1));
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(5rem, 19vw, 20rem);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(143, 220, 255, 0.16);
+  pointer-events: none;
+  user-select: none;
+}
+.hero-glow {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: 12%;
+  width: 60vmin;
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  background: radial-gradient(circle, rgba(143, 220, 255, 0.14), transparent 65%);
+  pointer-events: none;
+}
+/* Stacked composition; keep in sync with RENDER.mobileQuery */
+@media (max-width: 767px), (orientation: portrait) {
+  .hero-backword {
+    top: 24%;
+    right: 50%;
+    transform: translate(50%, calc(-50% + var(--py, 0px))) scale(var(--ps, 1));
+    font-size: 26vw;
+  }
+  .hero-glow {
+    top: 28%;
+    right: 50%;
+    transform: translate(50%, -50%);
+  }
+}
+
+.btn-notch {
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
 }
 
 *:focus-visible {
@@ -127,12 +162,12 @@ body::after {
   font-family: var(--font-mono);
 }
 
-/* JARVIS card with corner brackets */
-.jarvis-card {
+/* Card with corner brackets */
+.bracket-card {
   position: relative;
 }
-.jarvis-card::before,
-.jarvis-card::after {
+.bracket-card::before,
+.bracket-card::after {
   content: '';
   position: absolute;
   width: 14px;
@@ -144,24 +179,24 @@ body::after {
   pointer-events: none;
   z-index: 2;
 }
-.jarvis-card::before {
+.bracket-card::before {
   top: 0;
   left: 0;
   border-width: 1.5px 0 0 1.5px;
 }
-.jarvis-card::after {
+.bracket-card::after {
   bottom: 0;
   right: 0;
   border-width: 0 1.5px 1.5px 0;
 }
-.jarvis-card:hover::before,
-.jarvis-card:hover::after {
+.bracket-card:hover::before,
+.bracket-card:hover::after {
   opacity: 1;
 }
 
 /* Also add top-right and bottom-left brackets via a wrapper */
-.jarvis-card .corner-tr,
-.jarvis-card .corner-bl {
+.bracket-card .corner-tr,
+.bracket-card .corner-bl {
   position: absolute;
   width: 14px;
   height: 14px;
@@ -172,18 +207,18 @@ body::after {
   pointer-events: none;
   z-index: 2;
 }
-.jarvis-card .corner-tr {
+.bracket-card .corner-tr {
   top: 0;
   right: 0;
   border-width: 1.5px 1.5px 0 0;
 }
-.jarvis-card .corner-bl {
+.bracket-card .corner-bl {
   bottom: 0;
   left: 0;
   border-width: 0 0 1.5px 1.5px;
 }
-.jarvis-card:hover .corner-tr,
-.jarvis-card:hover .corner-bl {
+.bracket-card:hover .corner-tr,
+.bracket-card:hover .corner-bl {
   opacity: 0.7;
 }
 
@@ -195,26 +230,6 @@ body::after {
   50% {
     box-shadow: 0 0 24px rgba(0, 194, 255, 0.7), 0 0 48px rgba(0, 194, 255, 0.35), inset 0 0 24px rgba(0, 194, 255, 0.2);
   }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes spin-reverse {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
-}
-
-@keyframes bounce-y {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(10px); }
-}
-
-@keyframes blink-cursor {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
 }
 
 @keyframes glitch-1 {
@@ -236,11 +251,6 @@ body::after {
 @keyframes scan-move {
   0% { transform: translateY(-100%); }
   100% { transform: translateY(100vh); }
-}
-
-@keyframes beam-orbit {
-  0% { offset-distance: 0%; }
-  100% { offset-distance: 100%; }
 }
 
 @keyframes float-up {
@@ -294,6 +304,3 @@ body::after {
   border: 1px solid var(--color-border);
 }
 
-html.light .badge-udemy {
-  color: #6B21A8;
-}

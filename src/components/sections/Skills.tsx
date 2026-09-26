@@ -82,7 +82,7 @@ export default function Skills() {
                   key={group.id}
                   variants={fadeInUp}
                   transition={{ duration: 0.65, delay: i * 0.08 }}
-                  className="jarvis-card"
+                  className="bracket-card"
                   style={{
                     padding: '1.75rem',
                     background: 'var(--color-elevated)',

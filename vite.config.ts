@@ -9,4 +9,6 @@ export default defineConfig({
     tailwindcss(),
   ],
   base: process.env.GITHUB_ACTIONS ? '/araujos-nest-website/' : '/',
+  // The three.js Stage chunk is large but lazy-loaded after first paint.
+  build: { chunkSizeWarningLimit: 1100 },
 })
