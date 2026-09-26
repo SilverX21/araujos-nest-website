@@ -140,6 +140,8 @@ Repulsor charge/blast, a separate final fly-by, custom cursor, magnetic buttons,
 - **Reactor → Finale:** runs inside a new `#contact` section (`Finale.tsx`) instead of over Extracurricular, whose opaque cards would cover the close-up. `#contact` is 180svh only while the choreography runs (`html.cinematic`); otherwise it's 100svh.
 - **Tablet:** no separate ×0.7 travel config. Landscape tablets use desktop, portrait tablets use the stacked layout; both looked right, so a third pose set wasn't worth the tuning.
 - **Title pulse:** "Let's build the future!" gets a one-shot tracking snap when it enters the viewport, rather than being scrubbed, because the scrubbed pulse happened before the title was on screen.
+- **Footer pan (QA):** the canvas is fixed, so when the footer scrolled in, the finale copy slid up over the suit. `rig.pan` drops the camera by the footer's height (converted to world units at the suit's depth) over the footer's scroll range, in both the motion and reduced-motion builds. It sits outside the poses so `apply()` never resets it.
+- **Mobile hero (QA):** on short phones (≤ ~700 px tall) the bottom-anchored text rose into the suit. In the stacked layout the hero text now has `48svh` of top padding, the suit's footprint in the `hero` mobile pose. The vertical FOV is fixed, so that fraction holds at every width.
 
 ---
 
@@ -178,7 +180,15 @@ Section ids and nav anchors stay the same. The canvas is `aria-hidden`.
 - Frames stop when the tab is hidden (the gsap ticker runs on requestAnimationFrame).
 - **Not measured:** GPU time on low-end phones. Check this on a real mid-range Android once the final model exists, since its triangle count and textures will dominate.
 
-## 8. Implementation order
+## 8. QA (step 7)
+
+Scripted pass with Playwright against `vite preview`: Chromium and WebKit × desktop 1440×900, tablet portrait/landscape (touch), iPhone 13, reduced motion, model request aborted, model delayed 6 s, and portrait → landscape rotation mid-session. Each run scrolls hero → finale and back to the top.
+
+- No console errors, and no horizontal overflow in any case. The only errors are the deliberate failed model load, after which the canvas unmounts and the DOM site is intact.
+- Scrubbed timelines reverse cleanly back to the hero pose.
+- **Not covered:** Firefox (its headless engine couldn't start in the agent sandbox), real Safari on iOS, and GPU time on a low-end Android.
+
+## 9. Implementation order
 
 1. Cleanup: light theme, Marvel references, ParticleCanvas, HUD clutter.
 2. Foundation: deps, `smoothScroll.ts` (Lenis + ticker), lazy `Stage` + fallback detection, placeholder suit, lights. Check `build`, `lint`, and the browser.

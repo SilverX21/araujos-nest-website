@@ -1,6 +1,7 @@
 import { useEffect, type RefObject } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { MathUtils } from 'three';
 import { POSES, RENDER, SCENES, type Layout, type Pose, type PoseName } from './scenes';
 import { rig } from './rig';
 
@@ -32,8 +33,27 @@ function tween(tl: gsap.core.Timeline, from: Pose, to: Pose, [start, end]: Range
 const scrubbed = (trigger: ScrollTrigger.Vars) =>
   gsap.timeline({ scrollTrigger: { scrub: true, ...trigger } });
 
+// The canvas is fixed, so once the footer scrolls in the finale copy would slide up over the suit.
+// Pan the camera down by the footer's height (in world units at the suit's depth) to keep them aligned.
+function footerPan(layout: Layout) {
+  const { camera, suit } = POSES.finale[layout];
+  const worldPerPx = () =>
+    (2 * (camera.z - suit.z) * Math.tan(MathUtils.degToRad(camera.fov / 2))) / window.innerHeight;
+  gsap.fromTo(
+    rig,
+    { pan: 0 },
+    {
+      pan: () => document.querySelector('footer')!.offsetHeight * worldPerPx(),
+      ease: 'none',
+      immediateRender: false,
+      scrollTrigger: { trigger: 'footer', start: 'top bottom', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true },
+    },
+  );
+}
+
 function buildMotion(layout: Layout, stage: HTMLElement) {
   const P = (name: PoseName) => POSES[name][layout];
+  let stop = () => {};
 
   if (!arrived) {
     arrived = true;
@@ -43,7 +63,10 @@ function buildMotion(layout: Layout, stage: HTMLElement) {
     // Scrolling (or landing on a #hash) fast-forwards the intro instead of fighting it.
     const skip = () => intro.progress(1);
     if (window.scrollY > 0) skip();
-    else window.addEventListener('scroll', skip, { once: true, passive: true });
+    else {
+      window.addEventListener('scroll', skip, { once: true, passive: true });
+      stop = () => window.removeEventListener('scroll', skip);
+    }
   } else {
     // A breakpoint change reverted the old context (rig back to its pre-intro values).
     // Start from the hero pose; any scrubbed timeline in range overrides it on refresh.
@@ -83,6 +106,7 @@ function buildMotion(layout: Layout, stage: HTMLElement) {
   tween(reactorTl, P('reactorEntry'), P('reactorClose'), reactor.close, 'power1.inOut');
   tween(reactorTl, P('reactorClose'), P('reactorPulse'), reactor.pulse, 'power2.in');
   tween(reactorTl, P('reactorPulse'), P('finale'), reactor.finale, 'power2.out');
+  footerPan(layout);
 
   // The closing line catches the energy pulse once: tracking opens and snaps back.
   gsap.fromTo(
@@ -96,6 +120,7 @@ function buildMotion(layout: Layout, stage: HTMLElement) {
       scrollTrigger: { trigger: '.finale-title', start: 'top 85%', toggleActions: 'play none none reverse' },
     },
   );
+  return stop;
 }
 
 // Reduced motion: no camera travel. The suit is shown in the hero and finale and faded out elsewhere.
@@ -117,6 +142,7 @@ function buildReduced(layout: Layout, stage: HTMLElement) {
     start: 'top center',
     onToggle: (self) => show(self.isActive ? 'finale' : null),
   });
+  footerPan(layout);
 }
 
 export function useChoreography(stage: RefObject<HTMLDivElement | null>) {
@@ -136,8 +162,11 @@ export function useChoreography(stage: RefObject<HTMLDivElement | null>) {
         if (reduce) return buildReduced(layout, el);
         // Set before building so ScrollTrigger measures the taller #contact.
         document.documentElement.classList.add('cinematic');
-        buildMotion(layout, el);
-        return () => document.documentElement.classList.remove('cinematic');
+        const stop = buildMotion(layout, el);
+        return () => {
+          stop();
+          document.documentElement.classList.remove('cinematic');
+        };
       },
     );
     return () => mm.revert();

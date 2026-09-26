@@ -16,7 +16,8 @@ export default function Hero() {
         Backend
       </p>
 
-      <div className="relative z-2 mx-auto w-full max-w-[1200px] px-6 pb-16 md:landscape:pb-0 md:landscape:pt-16">
+      {/* Stacked layout: the top padding reserves the suit's hero pose (~top 46% of the viewport, POSES.hero mobile) */}
+      <div className="relative z-2 mx-auto w-full max-w-[1200px] px-6 pt-[48svh] pb-16 md:landscape:pb-0 md:landscape:pt-16">
         <div className="md:landscape:max-w-[55%]">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyan">
             {profile.role} · {profile.location}

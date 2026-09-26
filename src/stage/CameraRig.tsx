@@ -14,10 +14,10 @@ export default function CameraRig() {
     smoothed.y = MathUtils.damp(smoothed.y, pointer.y, IDLE.damping, dt);
     cam.position.set(
       camera.x + smoothed.x * IDLE.cameraParallax,
-      camera.y + smoothed.y * IDLE.cameraParallax,
+      camera.y - rig.pan + smoothed.y * IDLE.cameraParallax,
       camera.z,
     );
-    cam.lookAt(target.set(camera.tx, camera.ty + smoothed.y * IDLE.pointerPitch, camera.tz));
+    cam.lookAt(target.set(camera.tx, camera.ty - rig.pan + smoothed.y * IDLE.pointerPitch, camera.tz));
     if (cam.fov !== camera.fov) {
       cam.fov = camera.fov;
       cam.updateProjectionMatrix();
